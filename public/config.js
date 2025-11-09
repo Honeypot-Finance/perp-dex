@@ -17,7 +17,7 @@ window.__RUNTIME_CONFIG__ = {
   "VITE_APP_DESCRIPTION": "Orderly Trading Application",
   "VITE_HAS_PRIMARY_LOGO": "true",
   "VITE_HAS_SECONDARY_LOGO": "true",
-  "VITE_ENABLED_MENUS": "Trading,Portfolio",
+  "VITE_ENABLED_MENUS": "Trading,Portfolio,Rewards,Leaderboard,Markets",
   "VITE_CUSTOM_MENUS": "Swap, https://wasabee.honeypotfinance.xyz/; Honeypot, https://honeypotfinance.xyz/",
   "VITE_ENABLE_CAMPAIGNS": "false",
   "VITE_TELEGRAM_URL": "https://t.me/+tE1KgsD-GxJhOTg0",
