@@ -7,7 +7,7 @@ import { CustomBottomNav } from "@/components/CustomBottomNav";
 import { useScreen } from "@orderly.network/ui";
 import { WalletConnectorWidget } from "@orderly.network/ui-connector";
 
-export default function MarketsLayout() {
+export default function AMMPerpLayout() {
   const config = useOrderlyConfig();
   const { onRouteChange } = useNav();
   const { isMobile } = useScreen();

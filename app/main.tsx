@@ -30,8 +30,8 @@ const RewardsIndex = lazy(() => import('./pages/rewards/Index'));
 const RewardsAffiliate = lazy(() => import('./pages/rewards/Affiliate'));
 const VaultsLayout = lazy(() => import('./pages/vaults/Layout'));
 const VaultsIndex = lazy(() => import('./pages/vaults/Index'));
-const SwapLayout = lazy(() => import('./pages/swap/Layout'));
-const SwapIndex = lazy(() => import('./pages/swap/Index'));
+const AMMPerpLayout = lazy(() => import('./pages/amm-perp/Layout'));
+const AMMPerpIndex = lazy(() => import('./pages/amm-perp/Index'));
 
 async function loadRuntimeConfig() {
   return new Promise<void>((resolve) => {
@@ -133,10 +133,10 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'swap',
-        element: <SwapLayout />,
+        path: 'amm-perp',
+        element: <AMMPerpLayout />,
         children: [
-          { index: true, element: <SwapIndex /> },
+          { index: true, element: <AMMPerpIndex /> },
         ],
       },
     ],
