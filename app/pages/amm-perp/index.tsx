@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@orderly.network/ui";
 
 export default function AMMPerpPage() {
@@ -153,6 +153,15 @@ export default function AMMPerpPage() {
               backdropFilter: "blur(4px)",
             }}
             onClick={() => setShowWaitlistModal(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setShowWaitlistModal(false);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Close modal"
           />
 
           {/* Modal Content */}

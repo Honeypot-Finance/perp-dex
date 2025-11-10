@@ -6,12 +6,12 @@ import CustomLeftNav from "@/components/CustomLeftNav";
 import { withBasePath } from "@/utils/base-path";
 import { getRuntimeConfigBoolean } from "@/utils/runtime-config";
 import {
-  AccountSummaryWidget,
+  // AccountSummaryWidget,
   AccountMenuWidget,
   ChainMenuWidget,
   LanguageSwitcherWidget,
   SubAccountWidget,
-  ScanQRCodeWidget,
+  // ScanQRCodeWidget,
   RouteOption,
 } from "@orderly.network/ui-scaffold";
 
@@ -37,7 +37,7 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
 
   // Custom breakpoint for header mobile view at 1200px
   const [isHeaderMobile, setIsHeaderMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < 1200 : false
+    typeof window !== "undefined" ? window.innerWidth < 1200 : false
   );
 
   useEffect(() => {
@@ -45,8 +45,8 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
       setIsHeaderMobile(window.innerWidth < 1200);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Check if we're on the AMM page and sync state
@@ -267,8 +267,8 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
             >
               {account.address && (
                 <>
-                  <AccountSummaryWidget />
-                  <ScanQRCodeWidget />
+                  {/* <AccountSummaryWidget /> */}
+                  {/* <ScanQRCodeWidget /> */}
                 </>
               )}
               <LanguageSwitcherWidget />
