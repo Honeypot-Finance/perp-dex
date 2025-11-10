@@ -31,7 +31,7 @@ const RewardsAffiliate = lazy(() => import('./pages/rewards/Affiliate'));
 const VaultsLayout = lazy(() => import('./pages/vaults/Layout'));
 const VaultsIndex = lazy(() => import('./pages/vaults/Index'));
 const AMMPerpLayout = lazy(() => import('./pages/amm-perp/Layout'));
-const AMMPerpIndex = lazy(() => import('./pages/amm-perp/Index'));
+const AMMPerpIndex = lazy(() => import('./pages/amm-perp'));
 
 async function loadRuntimeConfig() {
   return new Promise<void>((resolve) => {
