@@ -1,23 +1,19 @@
 import { FC, useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Flex, cn, useScreen, Button } from "@orderly.network/ui";
+import { Link, useLocation } from "react-router-dom";
+import { Flex, cn } from "@orderly.network/ui";
 import { useAccount } from "@orderly.network/hooks";
-import { modal } from "@orderly.network/ui";
 import CustomLeftNav from "@/components/CustomLeftNav";
 import { withBasePath } from "@/utils/base-path";
 import { getRuntimeConfigBoolean } from "@/utils/runtime-config";
 import {
   AccountSummaryWidget,
+  AccountMenuWidget,
   ChainMenuWidget,
   LanguageSwitcherWidget,
   SubAccountWidget,
   ScanQRCodeWidget,
   RouteOption,
 } from "@orderly.network/ui-scaffold";
-import {
-  WalletConnectorModalId,
-  WalletConnectorSheetId,
-} from "@orderly.network/ui-connector";
 
 interface MenuItem {
   name: string;
@@ -36,34 +32,22 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
   externalLinks,
   onRouteChange,
 }) => {
-  const { isMobile } = useScreen();
-  const { account } = useAccount();
   const location = useLocation();
-  const navigate = useNavigate();
+  const { account } = useAccount();
 
-  // Custom breakpoint for mobile view at 1200px
-  const [isCustomMobile, setIsCustomMobile] = useState(
+  // Custom breakpoint for header mobile view at 1200px
+  const [isHeaderMobile, setIsHeaderMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 1200 : false
-  );
-
-  // Track if we should show switch in navbar (600-1200px) or below (<600px)
-  const [showSwitchInNav, setShowSwitchInNav] = useState(
-    typeof window !== 'undefined' ? window.innerWidth >= 600 && window.innerWidth < 1200 : false
   );
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      setIsCustomMobile(width < 1200);
-      setShowSwitchInNav(width >= 600 && width < 1200);
+      setIsHeaderMobile(window.innerWidth < 1200);
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Use custom mobile breakpoint instead of default
-  const showMobileView = isCustomMobile;
 
   // Check if we're on the AMM page and sync state
   const [mode, setMode] = useState<"orderbook" | "amm">(
@@ -74,19 +58,6 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
   useEffect(() => {
     setMode(location.pathname.startsWith("/amm-perp") ? "amm" : "orderbook");
   }, [location.pathname]);
-
-  const handleConnectWallet = () => {
-    const modalId = isMobile ? WalletConnectorSheetId : WalletConnectorModalId;
-    modal.show(modalId);
-  };
-
-  const handleModeSwitch = (newMode: "orderbook" | "amm") => {
-    if (newMode === "amm") {
-      navigate("/amm-perp");
-    } else {
-      navigate("/");
-    }
-  };
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -104,10 +75,10 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
       )}
       style={{ backgroundColor: "#2a2a2a" }}
     >
-      <button
-        onClick={() => handleModeSwitch("orderbook")}
+      <Link
+        to="/"
         className={cn(
-          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all",
+          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all oui-no-underline",
           mode === "orderbook" ? "oui-text-black" : "oui-text-white/60"
         )}
         style={{
@@ -115,11 +86,11 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
         }}
       >
         Orderbook
-      </button>
-      <button
-        onClick={() => handleModeSwitch("amm")}
+      </Link>
+      <Link
+        to="/amm-perp"
         className={cn(
-          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all",
+          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all oui-no-underline",
           mode === "amm" ? "oui-text-black" : "oui-text-white/60"
         )}
         style={{
@@ -127,7 +98,7 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
         }}
       >
         AMM
-      </button>
+      </Link>
     </div>
   );
 
@@ -136,7 +107,7 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
       className="oui-w-full"
       style={{ backgroundColor: "#140E06" }}
     >
-      {showMobileView ? (
+      {isHeaderMobile ? (
         <div className="oui-w-full oui-mx-auto oui-max-w-[1920px]">
           <Flex
             justify="between"
@@ -181,35 +152,17 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
               itemAlign="center"
               className="oui-gap-3"
             >
-              {account.address && (
-                <>
-                  <AccountSummaryWidget />
-                  <ScanQRCodeWidget />
-                </>
-              )}
-              {showSwitchInNav && <ModeSwitch />}
               <LanguageSwitcherWidget />
               {account.address && <SubAccountWidget />}
               <ChainMenuWidget />
-              <Button
-                onClick={handleConnectWallet}
-                size="sm"
-              >
-                {account.address
-                  ? `${account.address.slice(0, 6)}...${account.address.slice(
-                      -4
-                    )}`
-                  : "Connect Wallet"}
-              </Button>
+              <AccountMenuWidget />
             </Flex>
           </Flex>
 
-          {/* Mobile Mode Switch - only show below navbar when screen < 600px */}
-          {!showSwitchInNav && (
-            <div className="oui-flex oui-justify-center oui-px-6 oui-pb-3">
-              <ModeSwitch />
-            </div>
-          )}
+          {/* Mobile Mode Switch below header */}
+          <div className="oui-flex oui-justify-center oui-px-6 oui-pb-3">
+            <ModeSwitch />
+          </div>
         </div>
       ) : (
         /* Desktop Layout with centered nav */
@@ -321,16 +274,7 @@ export const CustomHeader: FC<CustomHeaderProps> = ({
               <LanguageSwitcherWidget />
               {account.address && <SubAccountWidget />}
               <ChainMenuWidget />
-              <Button
-                onClick={handleConnectWallet}
-                size="sm"
-              >
-                {account.address
-                  ? `${account.address.slice(0, 6)}...${account.address.slice(
-                      -4
-                    )}`
-                  : "Connect Wallet"}
-              </Button>
+              <AccountMenuWidget />
             </Flex>
           </Flex>
         </div>

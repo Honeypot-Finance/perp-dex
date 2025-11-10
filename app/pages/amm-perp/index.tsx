@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@orderly.network/ui";
 
 export default function AMMPerpPage() {
