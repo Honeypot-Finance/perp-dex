@@ -80,12 +80,15 @@ function loadConfig(): Config {
 
   try {
     const configText = readFileSync(configPath, "utf-8");
-    const jsonText = configText
-      .replace(/window\.__RUNTIME_CONFIG__\s*=\s*/, "")
-      .replace(/;$/, "")
-      .trim();
 
-    const config = JSON.parse(jsonText) as Config;
+    // Execute the JavaScript to get the config object
+    const configMatch = configText.match(/window\.__RUNTIME_CONFIG__\s*=\s*(\{[\s\S]*?\});/);
+    if (!configMatch) {
+      throw new Error("Could not find window.__RUNTIME_CONFIG__ in config.js");
+    }
+
+    // Use Function constructor to safely evaluate the object literal
+    const config = new Function('return ' + configMatch[1])() as Config;
     console.log("✓ Loaded config from public/config.js");
     return config;
   } catch (error) {
