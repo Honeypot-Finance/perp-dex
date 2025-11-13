@@ -1,0 +1,13 @@
+.campaign-card {
+  transform: translateY(0);
+}
+
+.campaign-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 120, 25, 0.4) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+.campaign-card:hover .campaign-card-overlay {
+  opacity: 1 !important;
+}
