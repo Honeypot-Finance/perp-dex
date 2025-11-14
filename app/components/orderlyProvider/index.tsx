@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, lazy, Suspense } from "react";
+import { ReactNode, useCallback, lazy, Suspense, useState, useEffect } from "react";
 import { OrderlyAppProvider } from "@orderly.network/react-app";
 import { useOrderlyConfig } from "@/utils/config";
 import type { NetworkId } from "@orderly.network/types";
@@ -9,24 +9,25 @@ import { getRuntimeConfigBoolean, getRuntimeConfigArray, getRuntimeConfig } from
 import { DemoGraduationChecker } from "@/components/DemoGraduationChecker";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import ServiceDisclaimerDialog from "./ServiceRestrictionsDialog";
+import { WalletProviderSelector, type WalletProviderType } from "@/components/WalletProviderSelector";
 // import { useIpRestriction } from "@/hooks/useIpRestriction";
 
 const NETWORK_ID_KEY = "orderly_network_id";
 
 const getNetworkId = (): NetworkId => {
 	if (typeof window === "undefined") return "mainnet";
-	
+
 	const disableMainnet = getRuntimeConfigBoolean('VITE_DISABLE_MAINNET');
 	const disableTestnet = getRuntimeConfigBoolean('VITE_DISABLE_TESTNET');
-	
+
 	if (disableMainnet && !disableTestnet) {
 		return "testnet";
 	}
-	
+
 	if (disableTestnet && !disableMainnet) {
 		return "mainnet";
 	}
-	
+
 	return (localStorage.getItem(NETWORK_ID_KEY) as NetworkId) || "mainnet";
 };
 
@@ -73,9 +74,76 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 	const config = useOrderlyConfig();
 	const networkId = getNetworkId();
   // const { isRestricted } = useIpRestriction();
-	
-	const privyAppId = getRuntimeConfig('VITE_PRIVY_APP_ID');
-	const usePrivy = !!privyAppId;
+
+	// Clean up old localStorage keys BEFORE initializing state
+	if (typeof window !== 'undefined') {
+		localStorage.removeItem('orderly_active_provider');
+		localStorage.removeItem('orderly_wallet_provider');
+	}
+
+	const [showProviderSelector, setShowProviderSelector] = useState(false);
+	const [selectedProvider, setSelectedProvider] = useState<WalletProviderType>('web3-onboard');
+	const [isAutoClicking, setIsAutoClicking] = useState(false);
+
+	console.log('[OrderlyProvider v2] Selected provider:', selectedProvider);
+
+	// Always intercept "Connect Wallet" button clicks to show provider selector
+	useEffect(() => {
+		const handleClick = (e: MouseEvent) => {
+			const target = e.target as HTMLElement;
+
+			// Don't intercept clicks inside the provider selector modal
+			if (target.closest('[data-wallet-provider-modal]')) {
+				return;
+			}
+
+			// Don't intercept if we're auto-clicking
+			if (isAutoClicking) {
+				return;
+			}
+
+			// Check if this is a connect wallet button click
+			const isConnectButton =
+				target.closest('[class*="connect"]') ||
+				target.closest('button')?.textContent?.toLowerCase().includes('connect');
+
+			if (isConnectButton) {
+				console.log('[OrderlyProvider] Connect wallet clicked, showing provider selector');
+				e.preventDefault();
+				e.stopPropagation();
+				setShowProviderSelector(true);
+			}
+		};
+
+		document.addEventListener('click', handleClick, true);
+		return () => document.removeEventListener('click', handleClick, true);
+	}, [isAutoClicking]);
+
+	const handleProviderSelect = (type: WalletProviderType) => {
+		console.log('[OrderlyProvider] Provider selected:', type);
+		setSelectedProvider(type);
+		setShowProviderSelector(false);
+
+		// Set flag to prevent click interception during auto-click
+		setIsAutoClicking(true);
+
+		// Auto-click connect button after provider renders
+		setTimeout(() => {
+			const connectButton = document.querySelector(
+				'button[class*="connect"], button[id*="connect"]'
+			) as HTMLElement;
+
+			if (connectButton && connectButton.textContent?.toLowerCase().includes('connect')) {
+				console.log('[OrderlyProvider] Auto-clicking connect button for', type);
+				connectButton.click();
+			}
+
+			// Reset flag after auto-click completes
+			setTimeout(() => {
+				setIsAutoClicking(false);
+			}, 100);
+		}, 500);
+	};
 
 	const parseChainIds = (envVar: string | undefined): Array<{id: number}> | undefined => {
 		if (!envVar) return undefined;
@@ -183,10 +251,6 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 		</OrderlyAppProvider>
 	);
 
-	const walletConnector = usePrivy
-		? <PrivyConnector networkId={networkId}>{appProvider}</PrivyConnector>
-		: <WalletConnector networkId={networkId}>{appProvider}</WalletConnector>;
-
 	return (
 		<LocaleProvider
 			onLanguageChanged={onLanguageChanged}
@@ -194,8 +258,17 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 			locale={defaultLanguage}
 			languages={filteredLanguages}
 		>
-			<Suspense fallback={<LoadingSpinner />}>
-				{walletConnector}
+			<WalletProviderSelector
+				isOpen={showProviderSelector}
+				onSelect={handleProviderSelect}
+				onClose={() => setShowProviderSelector(false)}
+			/>
+			<Suspense fallback={<LoadingSpinner />} key={selectedProvider}>
+				{selectedProvider === 'privy' ? (
+					<PrivyConnector networkId={networkId}>{appProvider}</PrivyConnector>
+				) : (
+					<WalletConnector networkId={networkId}>{appProvider}</WalletConnector>
+				)}
 			</Suspense>
 		</LocaleProvider>
 	);
