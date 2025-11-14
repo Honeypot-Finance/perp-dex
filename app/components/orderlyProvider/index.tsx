@@ -127,22 +127,34 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 		// Set flag to prevent click interception during auto-click
 		setIsAutoClicking(true);
 
-		// Auto-click connect button after provider renders
-		setTimeout(() => {
+		// Auto-click connect button after provider renders with retry logic
+		const tryAutoClick = (attempts = 0, maxAttempts = 20) => {
+			if (attempts >= maxAttempts) {
+				console.log('[OrderlyProvider] Max auto-click attempts reached');
+				setIsAutoClicking(false);
+				return;
+			}
+
 			const connectButton = document.querySelector(
 				'button[class*="connect"], button[id*="connect"]'
 			) as HTMLElement;
 
 			if (connectButton && connectButton.textContent?.toLowerCase().includes('connect')) {
-				console.log('[OrderlyProvider] Auto-clicking connect button for', type);
+				console.log('[OrderlyProvider] Auto-clicking connect button for', type, 'after', attempts, 'attempts');
 				connectButton.click();
-			}
 
-			// Reset flag after auto-click completes
-			setTimeout(() => {
-				setIsAutoClicking(false);
-			}, 100);
-		}, 500);
+				// Reset flag after auto-click completes
+				setTimeout(() => {
+					setIsAutoClicking(false);
+				}, 100);
+			} else {
+				// Retry after 200ms
+				setTimeout(() => tryAutoClick(attempts + 1, maxAttempts), 200);
+			}
+		};
+
+		// Start trying after initial delay
+		setTimeout(() => tryAutoClick(), 500);
 	};
 
 	const parseChainIds = (envVar: string | undefined): Array<{id: number}> | undefined => {
