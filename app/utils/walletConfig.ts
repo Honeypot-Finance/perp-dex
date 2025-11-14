@@ -21,6 +21,9 @@ import injectedOnboard from "@web3-onboard/injected-wallets";
 import { getRuntimeConfig } from "./runtime-config";
 import walletConnectOnboard from "@web3-onboard/walletconnect";
 import binanceWallet from "@binance/w3w-blocknative-connector";
+import bitgetWallet from "@web3-onboard/bitget";
+import phantomWallet from "@web3-onboard/phantom";
+import coinbaseWallet from "@web3-onboard/coinbase";
 
 export const getEvmConnectors = (): CreateConnectorFn[] => {
   const walletConnectProjectId = getRuntimeConfig(
@@ -97,9 +100,32 @@ export const getOnboardEvmWallets = () => {
     return [];
   }
 
-  return [
-    injectedOnboard(),
-    binanceWallet({ options: { lng: "en" } }),
+  // Debug: Check what wallet providers are available
+  if (isBrowser) {
+    console.log('[Wallet Debug] window.ethereum:', !!(window as any).ethereum);
+    console.log('[Wallet Debug] window.bitkeep:', !!(window as any).bitkeep);
+    console.log('[Wallet Debug] window.phantom:', !!(window as any).phantom);
+    console.log('[Wallet Debug] window.okxwallet:', !!(window as any).okxwallet);
+    console.log('[Wallet Debug] window.coinbaseWalletExtension:', !!(window as any).coinbaseWalletExtension);
+  }
+
+  // Wallet order (shown exactly in this order - Web3-Onboard doesn't auto-sort)
+  const wallets = [
+    // TOP PRIORITY: Partner wallets for maximum visibility
+    bitgetWallet(),        // #1 - Bitget Wallet
+    phantomWallet(),       // #2 - Phantom
+    coinbaseWallet({ darkMode: true }), // #3 - Coinbase
+
+    // Additional partner wallets
+    binanceWallet({ options: { lng: "en" } }), // #4 - Binance
+
+    // Auto-detected injected wallets (MetaMask, OKX, Rabby, etc.)
+    // Note: These will show with "Detected" badge if installed
+    injectedOnboard({
+      displayUnavailable: true,
+    }),
+
+    // Mobile wallet support (300+ wallets via QR code)
     walletConnectOnboard({
       projectId: walletConnectProjectId,
       qrModalOptions: {
@@ -108,6 +134,8 @@ export const getOnboardEvmWallets = () => {
       dappUrl: window.location.origin,
     }),
   ];
+
+  return wallets.filter(Boolean);
 };
 
 export const getEvmInitialConfig = () => {
