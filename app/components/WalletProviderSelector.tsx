@@ -1,4 +1,4 @@
-export type WalletProviderType = 'privy' | 'web3-onboard';
+export type WalletProviderType = 'privy' | 'web3-onboard' | 'particle';
 
 interface ProviderOption {
   type: WalletProviderType;
@@ -18,6 +18,12 @@ interface WalletProviderSelectorProps {
  */
 export const WalletProviderSelector = ({ isOpen, onSelect, onClose }: WalletProviderSelectorProps) => {
   const providerOptions: ProviderOption[] = [
+    {
+      type: 'particle',
+      name: 'Particle Network',
+      description: 'Social login (email, Google, Twitter)',
+      icon: '⚡',
+    },
     {
       type: 'privy',
       name: 'Privy',

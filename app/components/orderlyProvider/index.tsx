@@ -11,6 +11,7 @@ import ServiceDisclaimerDialog from "./ServiceRestrictionsDialog";
 import { WalletProviderSelector, type WalletProviderType } from "@/components/WalletProviderSelector";
 import PrivyConnector from "@/components/orderlyProvider/privyConnector";
 import WalletConnector from "@/components/orderlyProvider/walletConnector";
+import ParticleConnector from "@/components/orderlyProvider/particleConnector";
 // import { useIpRestriction } from "@/hooks/useIpRestriction";
 
 const NETWORK_ID_KEY = "orderly_network_id";
@@ -68,13 +69,26 @@ const getDefaultLanguage = (): LocaleCode => {
 	return (availableLanguages[0] || 'en') as LocaleCode;
 };
 
+const PROVIDER_KEY = "orderly_wallet_provider";
+
+const getStoredProvider = (): WalletProviderType => {
+	if (typeof window === "undefined") return "web3-onboard";
+	return (localStorage.getItem(PROVIDER_KEY) as WalletProviderType) || "web3-onboard";
+};
+
+const setStoredProvider = (provider: WalletProviderType) => {
+	if (typeof window !== "undefined") {
+		localStorage.setItem(PROVIDER_KEY, provider);
+	}
+};
+
 const OrderlyProvider = (props: { children: ReactNode }) => {
 	const config = useOrderlyConfig();
 	const networkId = getNetworkId();
   // const { isRestricted } = useIpRestriction();
 
 	const [showProviderSelector, setShowProviderSelector] = useState(false);
-	const [selectedProvider, setSelectedProvider] = useState<WalletProviderType>('web3-onboard');
+	const [selectedProvider, setSelectedProvider] = useState<WalletProviderType>(getStoredProvider());
 	const [isAutoClicking, setIsAutoClicking] = useState(false);
 
 	console.log('[OrderlyProvider v6] Selected provider:', selectedProvider);
@@ -114,6 +128,7 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 	const handleProviderSelect = (type: WalletProviderType) => {
 		console.log('[OrderlyProvider] Provider selected:', type);
 		setSelectedProvider(type);
+		setStoredProvider(type); // Persist to localStorage
 		setShowProviderSelector(false);
 
 		// Set flag to prevent click interception during auto-click
@@ -268,7 +283,9 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 				onClose={() => setShowProviderSelector(false)}
 			/>
 			<div key={selectedProvider}>
-				{selectedProvider === 'privy' ? (
+				{selectedProvider === 'particle' ? (
+					<ParticleConnector networkId={networkId}>{appProvider}</ParticleConnector>
+				) : selectedProvider === 'privy' ? (
 					<PrivyConnector networkId={networkId}>{appProvider}</PrivyConnector>
 				) : (
 					<WalletConnector networkId={networkId}>{appProvider}</WalletConnector>

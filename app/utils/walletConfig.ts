@@ -24,6 +24,7 @@ import binanceWallet from "@binance/w3w-blocknative-connector";
 import bitgetWallet from "@web3-onboard/bitget";
 import phantomWallet from "@web3-onboard/phantom";
 import coinbaseWallet from "@web3-onboard/coinbase";
+// import { particleWallet } from "./particleWalletConnector";
 
 export const getEvmConnectors = (): CreateConnectorFn[] => {
   const walletConnectProjectId = getRuntimeConfig(
@@ -111,7 +112,7 @@ export const getOnboardEvmWallets = () => {
 
   // Wallet order (shown exactly in this order - Web3-Onboard doesn't auto-sort)
   const wallets = [
-    // TOP PRIORITY: Partner wallets for maximum visibility
+    // Partner wallets for maximum visibility
     bitgetWallet(),        // #1 - Bitget Wallet
     phantomWallet(),       // #2 - Phantom
     coinbaseWallet({ darkMode: true }), // #3 - Coinbase
@@ -135,13 +136,17 @@ export const getOnboardEvmWallets = () => {
     }),
   ];
 
-  return wallets.filter(Boolean);
+  // Filter out null/undefined wallets and log the count
+  const validWallets = wallets.filter(Boolean);
+  console.log('[WalletConfig] Loaded wallets:', validWallets.length);
+
+  return validWallets;
 };
 
 export const getEvmInitialConfig = () => {
   const wallets = getOnboardEvmWallets();
 
-  return wallets.length > 0
+  const config = wallets.length > 0
     ? {
         options: {
           wallets,
@@ -152,4 +157,12 @@ export const getEvmInitialConfig = () => {
         },
       }
     : undefined;
+
+  console.log('[WalletConfig] EVM Initial Config:', {
+    hasConfig: !!config,
+    walletCount: wallets.length,
+    brokerName: getRuntimeConfig("VITE_ORDERLY_BROKER_NAME")
+  });
+
+  return config;
 };
