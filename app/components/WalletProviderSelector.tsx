@@ -22,13 +22,13 @@ export const WalletProviderSelector = ({ isOpen, onSelect, onClose }: WalletProv
       type: 'privy',
       name: 'Privy',
       description: 'Social login (email, Google, Twitter)',
-      icon: '🔐',
+      icon: '/images/walletproviders/privy.png',
     },
     {
       type: 'web3-onboard',
       name: 'Direct Wallet',
       description: 'MetaMask, WalletConnect, Solana wallets',
-      icon: '🔗',
+      icon: '/images/walletproviders/thirdweb.png',
     },
   ];
 
@@ -64,7 +64,9 @@ export const WalletProviderSelector = ({ isOpen, onSelect, onClose }: WalletProv
               onClick={() => onSelect(provider.type)}
               className="w-full flex items-center gap-3 p-3 mb-2 last:mb-0 rounded-lg text-left transition-all duration-200 bg-gray-800 hover:bg-gray-750 border border-gray-700 hover:border-blue-500 cursor-pointer group"
             >
-              <div className="text-2xl">{provider.icon}</div>
+              <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg overflow-hidden">
+                <img src={provider.icon} alt={provider.name} className="w-full h-full object-contain" />
+              </div>
               <div className="flex-1">
                 <h3 className="text-sm font-semibold text-white">
                   {provider.name}
