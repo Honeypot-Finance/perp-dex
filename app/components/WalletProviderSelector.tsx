@@ -1,6 +1,7 @@
-export type WalletProviderType = 'privy' | 'web3-onboard';
+// Scalable wallet provider type - can be extended with more providers
+export type WalletProviderType = string;
 
-interface ProviderOption {
+export interface ProviderOption {
   type: WalletProviderType;
   name: string;
   description: string;
@@ -11,26 +12,36 @@ interface WalletProviderSelectorProps {
   isOpen: boolean;
   onSelect: (type: WalletProviderType) => void;
   onClose: () => void;
+  providers?: ProviderOption[]; // Allow custom provider list
 }
+
+// Default provider options - can be overridden
+const DEFAULT_PROVIDERS: ProviderOption[] = [
+  {
+    type: 'privy',
+    name: 'Privy',
+    description: 'Social login (email, Google, Twitter)',
+    icon: '/images/walletproviders/privy.png',
+  },
+  {
+    type: 'web3-onboard',
+    name: 'Direct Wallet',
+    description: 'MetaMask, WalletConnect, Solana wallets',
+    icon: '/images/walletproviders/thirdweb.png',
+  },
+];
 
 /**
  * Modal for selecting wallet authentication provider
+ * Scalable design: add more providers by extending the providers array
  */
-export const WalletProviderSelector = ({ isOpen, onSelect, onClose }: WalletProviderSelectorProps) => {
-  const providerOptions: ProviderOption[] = [
-    {
-      type: 'privy',
-      name: 'Privy',
-      description: 'Social login (email, Google, Twitter)',
-      icon: '/images/walletproviders/privy.png',
-    },
-    {
-      type: 'web3-onboard',
-      name: 'Direct Wallet',
-      description: 'MetaMask, WalletConnect, Solana wallets',
-      icon: '/images/walletproviders/thirdweb.png',
-    },
-  ];
+export const WalletProviderSelector = ({
+  isOpen,
+  onSelect,
+  onClose,
+  providers = DEFAULT_PROVIDERS
+}: WalletProviderSelectorProps) => {
+  const providerOptions = providers;
 
   if (!isOpen) {
     return null;

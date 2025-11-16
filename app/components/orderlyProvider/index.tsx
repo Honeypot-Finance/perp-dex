@@ -1,4 +1,39 @@
-import { ReactNode, useCallback, useState, useEffect } from "react";
+/**
+ * ORDERLY PROVIDER - Scalable Wallet Provider System
+ *
+ * This component manages wallet authentication across multiple providers.
+ *
+ * HOW TO ADD A NEW WALLET PROVIDER:
+ *
+ * 1. Create connector component (e.g., app/components/orderlyProvider/rainbowkitConnector.tsx):
+ *    ```tsx
+ *    import { ReactNode } from 'react';
+ *    import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+ *    // ... setup provider with networkId prop
+ *    export default RainbowkitConnector;
+ *    ```
+ *
+ * 2. Add to PROVIDER_REGISTRY below:
+ *    ```tsx
+ *    'rainbowkit': {
+ *      Component: lazy(() => import("@/components/orderlyProvider/rainbowkitConnector"))
+ *    }
+ *    ```
+ *
+ * 3. Add provider option to WalletProviderSelector.tsx:
+ *    ```tsx
+ *    {
+ *      type: 'rainbowkit',
+ *      name: 'RainbowKit',
+ *      description: 'Multi-wallet support with beautiful UI',
+ *      icon: '/images/walletproviders/rainbowkit.png',
+ *    }
+ *    ```
+ *
+ * That's it! The system will automatically handle loading and rendering.
+ */
+
+import { ReactNode, useCallback, useState, useEffect, lazy, Suspense } from "react";
 import { OrderlyAppProvider } from "@orderly.network/react-app";
 import { useOrderlyConfig } from "@/utils/config";
 import type { NetworkId } from "@orderly.network/types";
@@ -9,9 +44,66 @@ import { getRuntimeConfigBoolean, getRuntimeConfigArray, getRuntimeConfig } from
 import { DemoGraduationChecker } from "@/components/DemoGraduationChecker";
 import ServiceDisclaimerDialog from "./ServiceRestrictionsDialog";
 import { WalletProviderSelector, type WalletProviderType } from "@/components/WalletProviderSelector";
-import PrivyConnector from "@/components/orderlyProvider/privyConnector";
-import WalletConnector from "@/components/orderlyProvider/walletConnector";
+import { WalletProviderLoadingState } from "@/components/WalletProviderLoadingState";
 // import { useIpRestriction } from "@/hooks/useIpRestriction";
+
+// ============================================================================
+// WALLET PROVIDER REGISTRY
+// ============================================================================
+// To add a new wallet provider:
+// 1. Create a new connector component (e.g., rainbowkitConnector.tsx)
+// 2. Add it to the registry below with lazy loading
+// 3. Add the provider option to WalletProviderSelector
+// ============================================================================
+
+interface ProviderComponent {
+	Component: React.LazyExoticComponent<React.FC<{ children: ReactNode; networkId: NetworkId }>>;
+}
+
+const PROVIDER_REGISTRY: Record<WalletProviderType, ProviderComponent> = {
+	'privy': {
+		Component: lazy(() => import("@/components/orderlyProvider/privyConnector"))
+	},
+	'web3-onboard': {
+		Component: lazy(() => import("@/components/orderlyProvider/walletConnector"))
+	},
+	// Add more providers here as needed:
+	// 'rainbowkit': {
+	//   Component: lazy(() => import("@/components/orderlyProvider/rainbowkitConnector"))
+	// },
+	// 'particle': {
+	//   Component: lazy(() => import("@/components/orderlyProvider/particleConnector"))
+	// },
+};
+
+// ============================================================================
+// PROVIDER RENDERER - Dynamically renders selected provider from registry
+// ============================================================================
+const ProviderRenderer = ({
+	selectedProvider,
+	networkId,
+	children
+}: {
+	selectedProvider: WalletProviderType;
+	networkId: NetworkId;
+	children: ReactNode;
+}) => {
+	const providerConfig = PROVIDER_REGISTRY[selectedProvider];
+
+	if (!providerConfig) {
+		console.error(`Provider "${selectedProvider}" not found in registry. Falling back to web3-onboard.`);
+		const fallbackConfig = PROVIDER_REGISTRY['web3-onboard'];
+		const FallbackComponent = fallbackConfig.Component;
+		return <FallbackComponent networkId={networkId}>{children}</FallbackComponent>;
+	}
+
+	const ProviderComponent = providerConfig.Component;
+	return (
+		<div key={selectedProvider}>
+			<ProviderComponent networkId={networkId}>{children}</ProviderComponent>
+		</div>
+	);
+};
 
 const NETWORK_ID_KEY = "orderly_network_id";
 
@@ -267,13 +359,14 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 				onSelect={handleProviderSelect}
 				onClose={() => setShowProviderSelector(false)}
 			/>
-			<div key={selectedProvider}>
-				{selectedProvider === 'privy' ? (
-					<PrivyConnector networkId={networkId}>{appProvider}</PrivyConnector>
-				) : (
-					<WalletConnector networkId={networkId}>{appProvider}</WalletConnector>
-				)}
-			</div>
+			<Suspense fallback={<WalletProviderLoadingState />}>
+				<ProviderRenderer
+					selectedProvider={selectedProvider}
+					networkId={networkId}
+				>
+					{appProvider}
+				</ProviderRenderer>
+			</Suspense>
 		</LocaleProvider>
 	);
 };

@@ -18,17 +18,17 @@ import {
   LeaderboardInactiveIcon,
   MarketsActiveIcon,
   MarketsInactiveIcon,
-  useScreen,
   Flex,
   cn,
+  useScreen,
 } from "@orderly.network/ui";
 import {
   getRuntimeConfig,
   getRuntimeConfigBoolean,
   getRuntimeConfigNumber,
 } from "./runtime-config";
-import { Link } from "react-router-dom";
-import CustomLeftNav from "@/components/CustomLeftNav";
+import { ModeSwitch } from "../components/ModeSwitch";
+import { AccountMenuWidget } from "@orderly.network/ui-scaffold";
 
 interface MainNavItem {
   name: string;
@@ -300,48 +300,45 @@ export const useOrderlyConfig = () => {
 
     mainNavProps.customRender = (components) => {
       return (
-        <Flex
-          justify="between"
+        <header
           className="oui-w-full"
+          style={{ backgroundColor: "#140E06" }}
         >
-          <Flex
-            itemAlign={"center"}
-            className={cn("oui-gap-3", "oui-overflow-hidden")}
-          >
-            {isMobile && (
-              <CustomLeftNav
-                menus={translatedEnabledMenus}
-                externalLinks={customMenus}
-              />
-            )}
-            <Link to="/">
-              {isMobile &&
-              getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO") ? (
-                <img
-                  src={withBasePath("/logo-secondary.webp")}
-                  alt="logo"
-                  style={{ height: "32px" }}
-                />
-              ) : (
-                components.title
-              )}
-            </Link>
-            {components.mainNav}
-          </Flex>
+          <div className="oui-relative oui-w-full oui-px-6 oui-py-4 oui-mx-auto oui-max-w-[1920px]">
+            <Flex justify="between" itemAlign="center" className="oui-w-full">
+              {/* Left - Logo */}
+              <div className="oui-flex oui-items-center oui-flex-shrink-0">
+                {components.title}
+              </div>
 
-          <Flex
-            itemAlign={"center"}
-            className="oui-gap-2"
-          >
-            {components.accountSummary}
-            {components.linkDevice}
-            {components.scanQRCode}
-            {components.languageSwitcher}
-            {components.subAccount}
-            {components.chainMenu}
-            {components.walletConnect}
-          </Flex>
-        </Flex>
+              {/* Center - Navigation (Desktop only) */}
+              {!isMobile && (
+                <div
+                  className="oui-absolute oui-left-1/2 oui-top-1/2"
+                  style={{ transform: "translate(-50%, -50%)" }}
+                >
+                  <nav
+                    className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
+                    style={{ backgroundColor: "#1B1308" }}
+                  >
+                    {components.mainNav}
+                    <div className="oui-ml-2">
+                      <ModeSwitch />
+                    </div>
+                  </nav>
+                </div>
+              )}
+
+              {/* Right - Widgets */}
+              <Flex itemAlign="center" className="oui-gap-3 oui-flex-shrink-0">
+                {components.languageSwitcher}
+                {components.subAccount}
+                {components.chainMenu}
+                <AccountMenuWidget />
+              </Flex>
+            </Flex>
+          </div>
+        </header>
       );
     };
 
