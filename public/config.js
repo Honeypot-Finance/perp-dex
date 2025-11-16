@@ -13,6 +13,7 @@ window.__RUNTIME_CONFIG__ = {
   VITE_DISABLE_EVM_WALLETS: "false",
   VITE_DISABLE_SOLANA_WALLETS: "false",
   VITE_WALLETCONNECT_PROJECT_ID: "23b1ff4e22147bdf7cab13c0ee4bed90",
+  VITE_PARA_API_KEY: "prod_02e8f88b675600c42e936681d13cae9d",
   VITE_APP_NAME: "Honeypot finance",
   VITE_APP_DESCRIPTION: "Orderly Trading Application",
   VITE_HAS_PRIMARY_LOGO: "true",

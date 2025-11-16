@@ -15,18 +15,18 @@
  *
  * 2. Add to PROVIDER_REGISTRY below:
  *    ```tsx
- *    'rainbowkit': {
- *      Component: lazy(() => import("@/components/orderlyProvider/rainbowkitConnector"))
+ *    'para': {
+ *      Component: lazy(() => import("@/components/orderlyProvider/paraConnector"))
  *    }
  *    ```
  *
  * 3. Add provider option to WalletProviderSelector.tsx:
  *    ```tsx
  *    {
- *      type: 'rainbowkit',
- *      name: 'RainbowKit',
- *      description: 'Multi-wallet support with beautiful UI',
- *      icon: '/images/walletproviders/rainbowkit.png',
+ *      type: 'para',
+ *      name: 'Para',
+ *      description: 'Universal wallet (EVM, Solana, Cosmos)',
+ *      icon: '/images/walletproviders/para.png',
  *    }
  *    ```
  *
@@ -66,6 +66,9 @@ const PROVIDER_REGISTRY: Record<WalletProviderType, ProviderComponent> = {
 	},
 	'web3-onboard': {
 		Component: lazy(() => import("@/components/orderlyProvider/walletConnector"))
+	},
+	'para': {
+		Component: lazy(() => import("@/components/orderlyProvider/paraConnector"))
 	},
 	// Add more providers here as needed:
 	// 'rainbowkit': {
