@@ -11,6 +11,7 @@ import { LeftNavProps, LeftNavItem } from "@orderly.network/ui-scaffold";
 import { ExternalLink } from "lucide-react";
 import { getRuntimeConfig, getRuntimeConfigBoolean } from "@/utils/runtime-config";
 import { withBasePath } from "@/utils/base-path";
+import { ModeSwitch } from "@/components/ModeSwitch";
 
 type LeftNavUIProps = LeftNavProps &
   {
@@ -67,8 +68,13 @@ const LeftNavSheet = modal.create<LeftNavUIProps>((props) => {
                 : <h1 className="oui-text-base-contrast-80 oui-font-bold">{getRuntimeConfig('VITE_ORDERLY_BROKER_NAME')}</h1>
             }
           </div>
-          
-          <div className="oui-flex oui-h-[calc(100vh-120px)] oui-flex-col oui-items-start oui-overflow-y-auto">
+
+          {/* Mode Switch in mobile menu */}
+          <div className="oui-flex oui-justify-center oui-py-2">
+            <ModeSwitch />
+          </div>
+
+          <div className="oui-flex oui-h-[calc(100vh-180px)] oui-flex-col oui-items-start oui-overflow-y-auto">
             {Array.isArray(props?.menus) && props.menus.length > 0 && (
               <>
                 {props.menus?.map((item) => (
@@ -80,7 +86,7 @@ const LeftNavSheet = modal.create<LeftNavUIProps>((props) => {
                 ))}
               </>
             )}
-            
+
             {Array.isArray(props?.externalLinks) && props.externalLinks.length > 0 && (
               <>
                 <div className="oui-w-full oui-border-t oui-border-line-12 oui-my-2 oui-bg-base-3"></div>
