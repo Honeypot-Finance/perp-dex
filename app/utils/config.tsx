@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "@orderly.network/i18n";
 import { TradingPageProps } from "@orderly.network/trading";
 import {
@@ -18,17 +18,16 @@ import {
   LeaderboardInactiveIcon,
   MarketsActiveIcon,
   MarketsInactiveIcon,
-  useScreen,
   Flex,
-  cn,
 } from "@orderly.network/ui";
 import {
   getRuntimeConfig,
   getRuntimeConfigBoolean,
   getRuntimeConfigNumber,
 } from "./runtime-config";
-import { Link } from "react-router-dom";
-import CustomLeftNav from "@/components/CustomLeftNav";
+import { ModeSwitch } from "../components/ModeSwitch";
+import { AccountMenuWidget } from "@orderly.network/ui-scaffold";
+import CustomLeftNav from "../components/CustomLeftNav";
 
 interface MainNavItem {
   name: string;
@@ -245,7 +244,20 @@ const getColorConfig = (): ColorConfigInterface | undefined => {
 
 export const useOrderlyConfig = () => {
   const { t } = useTranslation();
-  const { isMobile } = useScreen();
+
+  // Custom breakpoint for header mobile view at 1000px
+  const [isHeaderMobile, setIsHeaderMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 1000 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsHeaderMobile(window.innerWidth < 1000);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return useMemo<OrderlyConfig>(() => {
     const enabledMenus = getEnabledMenus();
@@ -300,48 +312,65 @@ export const useOrderlyConfig = () => {
 
     mainNavProps.customRender = (components) => {
       return (
-        <Flex
-          justify="between"
+        <header
           className="oui-w-full"
+          style={{ backgroundColor: "#140E06" }}
         >
-          <Flex
-            itemAlign={"center"}
-            className={cn("oui-gap-3", "oui-overflow-hidden")}
-          >
-            {isMobile && (
-              <CustomLeftNav
-                menus={translatedEnabledMenus}
-                externalLinks={customMenus}
-              />
-            )}
-            <Link to="/">
-              {isMobile &&
-              getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO") ? (
-                <img
-                  src={withBasePath("/logo-secondary.webp")}
-                  alt="logo"
-                  style={{ height: "32px" }}
-                />
-              ) : (
-                components.title
-              )}
-            </Link>
-            {components.mainNav}
-          </Flex>
+          <div className="oui-w-full oui-mx-auto oui-max-w-[1920px]">
+            <div
+              className={`oui-relative oui-w-full ${
+                isHeaderMobile ? "oui-px-4 oui-py-2" : "oui-px-6 oui-py-4"
+              }`}
+            >
+              <Flex
+                justify="between"
+                itemAlign="center"
+                className="oui-w-full"
+              >
+                {/* Left - Logo + Mobile Menu */}
+                <div className="oui-flex oui-items-center oui-gap-3 oui-flex-shrink-0">
+                  {isHeaderMobile && (
+                    <CustomLeftNav
+                      menus={translatedEnabledMenus}
+                      externalLinks={customMenus}
+                    />
+                  )}
+                  {components.title}
+                </div>
 
-          <Flex
-            itemAlign={"center"}
-            className="oui-gap-2"
-          >
-            {components.accountSummary}
-            {components.linkDevice}
-            {components.scanQRCode}
-            {components.languageSwitcher}
-            {components.subAccount}
-            {components.chainMenu}
-            {components.walletConnect}
-          </Flex>
-        </Flex>
+                {/* Center - Navigation (Desktop only) */}
+                {!isHeaderMobile && (
+                  <div>
+                    <nav
+                      className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
+                      style={{ backgroundColor: "#1B1308" }}
+                    >
+                      {components.mainNav}
+                      <div className="oui-ml-2">
+                        <ModeSwitch />
+                      </div>
+                    </nav>
+                  </div>
+                )}
+
+                {/* Right - Widgets */}
+                <Flex
+                  itemAlign="center"
+                  className={
+                    isHeaderMobile
+                      ? "oui-gap-2 oui-flex-shrink-0"
+                      : "oui-gap-3 oui-flex-shrink-0"
+                  }
+                >
+                  {components.languageSwitcher}
+                  {components.subAccount}
+                  {components.chainMenu}
+                  <AccountMenuWidget />
+                </Flex>
+              </Flex>
+            </div>
+          </div>
+        </header>
       );
     };
 
@@ -412,5 +441,5 @@ export const useOrderlyConfig = () => {
         },
       },
     };
-  }, [t, isMobile]);
+  }, [t, isHeaderMobile]);
 };
