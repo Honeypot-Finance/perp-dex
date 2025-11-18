@@ -69,6 +69,11 @@ const ALL_MENU_ITEMS = [
     translationKey: "tradingRewards.rewards",
   },
   {
+    name: "Referral",
+    href: "/referral",
+    translationKey: "affiliate.referral",
+  },
+  {
     name: "Leaderboard",
     href: "/leaderboard",
     translationKey: "tradingLeaderboard.leaderboard",
