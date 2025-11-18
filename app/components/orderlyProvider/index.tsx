@@ -70,12 +70,12 @@ const PROVIDER_REGISTRY: Record<WalletProviderType, ProviderComponent> = {
 	'para': {
 		Component: lazy(() => import("@/components/orderlyProvider/paraConnector"))
 	},
+	'particle': {
+		Component: lazy(() => import("@/components/orderlyProvider/particleConnector"))
+	},
 	// Add more providers here as needed:
 	// 'rainbowkit': {
 	//   Component: lazy(() => import("@/components/orderlyProvider/rainbowkitConnector"))
-	// },
-	// 'particle': {
-	//   Component: lazy(() => import("@/components/orderlyProvider/particleConnector"))
 	// },
 };
 
@@ -163,13 +163,33 @@ const getDefaultLanguage = (): LocaleCode => {
 	return (availableLanguages[0] || 'en') as LocaleCode;
 };
 
+const SELECTED_PROVIDER_KEY = "orderly_selected_provider";
+
+const getInitialProvider = (): WalletProviderType => {
+	if (typeof window === "undefined") return "web3-onboard";
+
+	// Check if this is a Particle OAuth callback
+	const urlParams = new URLSearchParams(window.location.search);
+	if (urlParams.has('particleThirdpartyParams')) {
+		return 'particle';
+	}
+
+	// Check localStorage for previously selected provider
+	const stored = localStorage.getItem(SELECTED_PROVIDER_KEY);
+	if (stored && PROVIDER_REGISTRY[stored]) {
+		return stored;
+	}
+
+	return 'web3-onboard';
+};
+
 const OrderlyProvider = (props: { children: ReactNode }) => {
 	const config = useOrderlyConfig();
 	const networkId = getNetworkId();
   // const { isRestricted } = useIpRestriction();
 
 	const [showProviderSelector, setShowProviderSelector] = useState(false);
-	const [selectedProvider, setSelectedProvider] = useState<WalletProviderType>('web3-onboard');
+	const [selectedProvider, setSelectedProvider] = useState<WalletProviderType>(getInitialProvider());
 	const [isAutoClicking, setIsAutoClicking] = useState(false);
 
 	console.log('[OrderlyProvider v6] Selected provider:', selectedProvider);
@@ -211,6 +231,11 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 		setSelectedProvider(type);
 		setShowProviderSelector(false);
 
+		// Save selected provider to localStorage
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(SELECTED_PROVIDER_KEY, type);
+		}
+
 		// Set flag to prevent click interception during auto-click
 		setIsAutoClicking(true);
 
@@ -240,8 +265,8 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 			}
 		};
 
-		// Start trying after initial delay
-		setTimeout(() => tryAutoClick(), 500);
+		// Start trying after initial delay to ensure new provider is mounted
+		setTimeout(() => tryAutoClick(), 1000);
 	};
 
 	const parseChainIds = (envVar: string | undefined): Array<{id: number}> | undefined => {

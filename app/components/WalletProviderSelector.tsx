@@ -35,6 +35,12 @@ const DEFAULT_PROVIDERS: ProviderOption[] = [
     description: "Universal wallet (EVM, Solana, Cosmos)",
     icon: "/images/walletproviders/para.png",
   },
+  {
+    type: "particle",
+    name: "Particle Network",
+    description: "Social login & Web3 wallets (EVM, Solana)",
+    icon: "/images/walletproviders/particle.png",
+  },
 ];
 
 /**
