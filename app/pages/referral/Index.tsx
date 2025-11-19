@@ -21,7 +21,7 @@ export default function ReferralIndex() {
         <div className="oui-flex oui-justify-center">
           <div className="oui-py-6 oui-px-4 lg:oui-px-6 lg:oui-py-12 xl:oui-pl-4 lx:oui-pr-6">
             <div className="oui-py-6 oui-px-4 lg:oui-px-6 xl:oui-pl-3 lx:oui-pr-6">
-              <Dashboard.HomePage />
+              <Dashboard.DashboardPage />
             </div>
           </div>
         </div>
