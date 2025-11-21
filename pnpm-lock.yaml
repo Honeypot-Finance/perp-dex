@@ -13,6 +13,9 @@ importers:
 
   .:
     dependencies:
+      '@binance/w3w-blocknative-connector':
+        specifier: ^1.0.0
+        version: 1.1.10(@web3-onboard/common@2.4.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76))(bufferutil@4.0.9)(encoding@0.1.13)(tsx@4.20.6)(utf-8-validate@5.0.10)(yaml@2.8.1)
       '@cosmjs/cosmwasm-stargate':
         specifier: 0.37.0
         version: 0.37.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -124,6 +127,9 @@ importers:
       '@web3-onboard/coinbase':
         specifier: ^2.4.2
         version: 2.4.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@web3-onboard/injected-wallets':
+        specifier: ^2.11.2
+        version: 2.11.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76)
       '@web3-onboard/phantom':
         specifier: ^2.1.1
         version: 2.1.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76)
@@ -13970,7 +13976,7 @@ snapshots:
       detect-libc: 2.1.2
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.6.9(encoding@0.1.13)
+      node-fetch: 2.7.0(encoding@0.1.13)
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
