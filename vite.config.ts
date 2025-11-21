@@ -65,8 +65,9 @@ export default defineConfig(() => {
       sourcemap: false, // Disable sourcemaps to save memory
       rollupOptions: {
         output: {
-          // More aggressive code splitting
+          // More aggressive code splitting to reduce memory usage
           manualChunks(id) {
+            // Only split node_modules, let Vite handle app code
             if (id.includes('node_modules')) {
               // Split by package to reduce chunk size
               if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
@@ -87,6 +88,8 @@ export default defineConfig(() => {
               // Group remaining vendors
               return 'vendor';
             }
+            // Return undefined for app code - let Vite handle it
+            return undefined;
           },
         },
       },
