@@ -1,0 +1,538 @@
+{
+	"info": {
+		"_postman_id": "perp-dex-api-collection",
+		"name": "Perp DEX Trading API",
+		"description": "Complete API collection for testing Perp DEX Trading API endpoints. Includes both public market data endpoints and private authenticated trading endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public - Market Data",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						},
+						"description": "Check API health status"
+					}
+				},
+				{
+					"name": "Get All Symbols",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/symbols",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "symbols"]
+						},
+						"description": "Get all available trading symbols"
+					}
+				},
+				{
+					"name": "Get All Tickers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/tickers",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "tickers"]
+						},
+						"description": "Get ticker data for all symbols"
+					}
+				},
+				{
+					"name": "Get Single Ticker",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/ticker/PERP_BTC_USDC",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "ticker", "PERP_BTC_USDC"]
+						},
+						"description": "Get ticker data for a specific symbol"
+					}
+				},
+				{
+					"name": "Get Orderbook",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/orderbook/PERP_BTC_USDC?max_level=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "orderbook", "PERP_BTC_USDC"],
+							"query": [
+								{
+									"key": "max_level",
+									"value": "10",
+									"description": "Maximum depth levels (optional)"
+								}
+							]
+						},
+						"description": "Get orderbook for a specific symbol"
+					}
+				},
+				{
+					"name": "Get Recent Trades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/trades/PERP_BTC_USDC?limit=50",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "trades", "PERP_BTC_USDC"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Number of trades (optional)"
+								}
+							]
+						},
+						"description": "Get recent trades for a specific symbol"
+					}
+				},
+				{
+					"name": "Get Klines (Candlestick)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/klines?symbol=PERP_BTC_USDC&type=1h&limit=100",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "klines"],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "PERP_BTC_USDC"
+								},
+								{
+									"key": "type",
+									"value": "1h",
+									"description": "1m, 5m, 15m, 30m, 1h, 4h, 12h, 1d, 1w, 1mon"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Number of candles (optional)"
+								}
+							]
+						},
+						"description": "Get candlestick data"
+					}
+				},
+				{
+					"name": "Get Funding Rate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/funding-rate/PERP_BTC_USDC",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "funding-rate", "PERP_BTC_USDC"]
+						},
+						"description": "Get current funding rate for a symbol"
+					}
+				},
+				{
+					"name": "Get Funding Rate History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/v1/market/funding-rate-history?symbol=PERP_BTC_USDC&limit=50",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "market", "funding-rate-history"],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "PERP_BTC_USDC"
+								},
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Number of records (optional)"
+								}
+							]
+						},
+						"description": "Get funding rate history"
+					}
+				}
+			],
+			"description": "Public endpoints that don't require authentication"
+		},
+		{
+			"name": "Private - Account",
+			"item": [
+				{
+					"name": "Get Account Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/account/info",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "account", "info"]
+						},
+						"description": "Get account information"
+					}
+				},
+				{
+					"name": "Get Account Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/account/balance",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "account", "balance"]
+						},
+						"description": "Get account balance and holdings"
+					}
+				},
+				{
+					"name": "Get Account Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/account/stats",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "account", "stats"]
+						},
+						"description": "Get account statistics (PnL, volume, etc.)"
+					}
+				}
+			],
+			"description": "Account-related endpoints (requires API key)"
+		},
+		{
+			"name": "Private - Trading",
+			"item": [
+				{
+					"name": "Create Limit Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"symbol\": \"PERP_BTC_USDC\",\n  \"side\": \"BUY\",\n  \"order_type\": \"LIMIT\",\n  \"order_price\": 83500,\n  \"order_quantity\": 0.001\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders"]
+						},
+						"description": "Create a limit order"
+					}
+				},
+				{
+					"name": "Create Market Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"symbol\": \"PERP_BTC_USDC\",\n  \"side\": \"BUY\",\n  \"order_type\": \"MARKET\",\n  \"order_quantity\": 0.001\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders"]
+						},
+						"description": "Create a market order"
+					}
+				},
+				{
+					"name": "Get All Active Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders"]
+						},
+						"description": "Get all active orders"
+					}
+				},
+				{
+					"name": "Get Orders by Symbol",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders?symbol=PERP_BTC_USDC",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders"],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "PERP_BTC_USDC"
+								}
+							]
+						},
+						"description": "Get active orders for a specific symbol"
+					}
+				},
+				{
+					"name": "Get Order by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders/:orderId",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders", ":orderId"],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "123456789",
+									"description": "Replace with actual order ID"
+								}
+							]
+						},
+						"description": "Get details of a specific order"
+					}
+				},
+				{
+					"name": "Cancel Order by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders/:orderId?symbol=PERP_BTC_USDC",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders", ":orderId"],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "PERP_BTC_USDC"
+								}
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "123456789",
+									"description": "Replace with actual order ID"
+								}
+							]
+						},
+						"description": "Cancel a specific order"
+					}
+				},
+				{
+					"name": "Cancel All Orders",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders"]
+						},
+						"description": "Cancel all active orders"
+					}
+				},
+				{
+					"name": "Cancel Orders by Symbol",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders?symbol=PERP_BTC_USDC",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders"],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "PERP_BTC_USDC"
+								}
+							]
+						},
+						"description": "Cancel all orders for a specific symbol"
+					}
+				},
+				{
+					"name": "Get Order History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/orders/history?symbol=PERP_BTC_USDC&size=50",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "orders", "history"],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "PERP_BTC_USDC",
+									"description": "Symbol filter (optional)"
+								},
+								{
+									"key": "size",
+									"value": "50",
+									"description": "Number of records (optional)"
+								},
+								{
+									"key": "status",
+									"value": "FILLED",
+									"description": "Order status filter (optional)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get historical orders"
+					}
+				}
+			],
+			"description": "Trading endpoints (requires API key)"
+		},
+		{
+			"name": "Private - Positions",
+			"item": [
+				{
+					"name": "Get All Positions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/positions",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "positions"]
+						},
+						"description": "Get all open positions"
+					}
+				},
+				{
+					"name": "Get Position by Symbol",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/positions/PERP_BTC_USDC",
+							"host": ["{{baseUrl}}"],
+							"path": ["v1", "positions", "PERP_BTC_USDC"]
+						},
+						"description": "Get position for a specific symbol"
+					}
+				}
+			],
+			"description": "Position management endpoints (requires API key)"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "apiKey",
+			"value": "your_api_key_here",
+			"type": "string"
+		}
+	]
+}
