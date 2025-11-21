@@ -1,8 +1,15 @@
 {
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm install",
   "rewrites": [
     {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3.2.29"
+    }
+  }
 }

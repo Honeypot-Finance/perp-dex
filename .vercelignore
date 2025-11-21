@@ -15,3 +15,6 @@ coverage
 *.spec.ts
 __tests__
 api/scripts/test-*.ts
+api/package.json
+api/package-lock.json
+api/node_modules
