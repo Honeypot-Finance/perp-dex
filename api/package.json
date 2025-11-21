@@ -1,0 +1,33 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Serverless functions - no build needed'",
+    "init-db": "tsx scripts/init-database.ts",
+    "generate-key": "tsx scripts/generate-api-key.ts",
+    "register": "tsx scripts/register-account.ts",
+    "manage-keys": "tsx scripts/manage-orderly-keys.ts",
+    "test": "tsx scripts/test-api.ts",
+    "test:all": "tsx scripts/test-full-flow.ts",
+    "test:withdraw": "tsx scripts/test-withdraw.ts",
+    "test:orders": "tsx scripts/test-order-management.ts"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.15.6",
+    "@vercel/node": "^3.0.0",
+    "axios": "^1.6.5",
+    "bcryptjs": "^2.4.3",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.0",
+    "pg": "^8.16.3",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6"
+  }
+}

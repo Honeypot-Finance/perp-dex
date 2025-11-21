@@ -45,6 +45,7 @@ import { DemoGraduationChecker } from "@/components/DemoGraduationChecker";
 import ServiceDisclaimerDialog from "./ServiceRestrictionsDialog";
 import { WalletProviderSelector, type WalletProviderType } from "@/components/WalletProviderSelector";
 import { WalletProviderLoadingState } from "@/components/WalletProviderLoadingState";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 // import { useIpRestriction } from "@/hooks/useIpRestriction";
 
 // ============================================================================
@@ -344,7 +345,9 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 			{...(chainFilter && { chainFilter } as any)}
 			defaultChain={defaultChain}
 		>
-			<DemoGraduationChecker />
+			<ErrorBoundary>
+				<DemoGraduationChecker />
+			</ErrorBoundary>
       <ServiceDisclaimerDialog isRestricted={false} />
 			{props.children}
 		</OrderlyAppProvider>
