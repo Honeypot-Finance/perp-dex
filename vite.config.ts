@@ -67,14 +67,11 @@ export default defineConfig(() => {
         output: {
           // More aggressive code splitting to reduce memory usage
           manualChunks(id) {
-            // Only split node_modules, let Vite handle app code
+            // Only split large vendor libraries to reduce memory usage
             if (id.includes('node_modules')) {
               // Split by package to reduce chunk size
               if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
                 return 'react-vendor';
-              }
-              if (id.includes('@orderly.network')) {
-                return 'orderly-vendor';
               }
               if (id.includes('@privy-io') || id.includes('@web3-onboard')) {
                 return 'wallet-vendor';
@@ -85,17 +82,26 @@ export default defineConfig(() => {
               if (id.includes('@solana')) {
                 return 'solana-vendor';
               }
-              // Group remaining vendors
-              return 'vendor';
+              // Don't split @orderly.network packages - let Vite handle their internal deps
+              // Group all other vendors together
+              if (!id.includes('@orderly.network')) {
+                return 'vendor';
+              }
             }
-            // Return undefined for app code - let Vite handle it
+            // Return undefined for app code and @orderly.network - let Vite handle it
             return undefined;
           },
         },
       },
     },
     optimizeDeps: {
-      include: ["react", "react-dom", "react-router-dom"],
+      include: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "@orderly.network/hooks",
+        "@orderly.network/react-app",
+      ],
     },
   };
 });
