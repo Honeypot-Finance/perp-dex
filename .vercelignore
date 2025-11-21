@@ -1,0 +1,17 @@
+# Ignore files that don't need to be uploaded to Vercel
+node_modules/.cache
+.vite
+.vercel
+.git
+*.log
+*.md
+!README.md
+!api/README.md
+!api/PARTNER_INTEGRATION.md
+.env.local
+.env.*.local
+coverage
+*.test.ts
+*.spec.ts
+__tests__
+api/scripts/test-*.ts

@@ -60,6 +60,19 @@ export default defineConfig(() => {
     ],
     build: {
       outDir: "build/client",
+      // Optimize for memory during build
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split vendor chunks to reduce memory usage
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            'orderly': ['@orderly.network/hooks', '@orderly.network/types'],
+            'wallet': ['@orderly.network/wallet-connector', '@orderly.network/wallet-connector-privy'],
+            'web3': ['viem', 'wagmi'],
+          },
+        },
+      },
     },
     optimizeDeps: {
       include: ["react", "react-dom", "react-router-dom"],
