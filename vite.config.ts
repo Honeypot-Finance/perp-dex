@@ -60,16 +60,33 @@ export default defineConfig(() => {
     ],
     build: {
       outDir: "build/client",
-      // Optimize for memory during build
+      // Aggressive memory optimization for 8GB machines
       chunkSizeWarningLimit: 1000,
+      sourcemap: false, // Disable sourcemaps to save memory
       rollupOptions: {
         output: {
-          manualChunks: {
-            // Split vendor chunks to reduce memory usage
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'orderly': ['@orderly.network/hooks', '@orderly.network/types'],
-            'wallet': ['@orderly.network/wallet-connector', '@orderly.network/wallet-connector-privy'],
-            'web3': ['viem', 'wagmi'],
+          // More aggressive code splitting
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              // Split by package to reduce chunk size
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+                return 'react-vendor';
+              }
+              if (id.includes('@orderly.network')) {
+                return 'orderly-vendor';
+              }
+              if (id.includes('@privy-io') || id.includes('@web3-onboard')) {
+                return 'wallet-vendor';
+              }
+              if (id.includes('viem') || id.includes('wagmi') || id.includes('ethers')) {
+                return 'web3-vendor';
+              }
+              if (id.includes('@solana')) {
+                return 'solana-vendor';
+              }
+              // Group remaining vendors
+              return 'vendor';
+            }
           },
         },
       },
