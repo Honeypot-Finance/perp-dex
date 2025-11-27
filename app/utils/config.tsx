@@ -28,6 +28,7 @@ import {
 import { ModeSwitch } from "../components/ModeSwitch";
 import { AccountMenuWidget } from "@orderly.network/ui-scaffold";
 import CustomLeftNav from "../components/CustomLeftNav";
+import { EnsoCheckoutButton } from "../components/EnsoCheckoutButton";
 
 interface MainNavItem {
   name: string;
@@ -367,6 +368,7 @@ export const useOrderlyConfig = () => {
                       : "oui-gap-3 oui-flex-shrink-0"
                   }
                 >
+                  <EnsoCheckoutButton />
                   {components.languageSwitcher}
                   {components.subAccount}
                   {components.chainMenu}
