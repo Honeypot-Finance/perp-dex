@@ -328,12 +328,8 @@ export const useOrderlyConfig = () => {
                 isHeaderMobile ? "oui-px-4 oui-py-2" : "oui-px-6 oui-py-4"
               }`}
             >
-              <Flex
-                justify="between"
-                itemAlign="center"
-                className="oui-w-full"
-              >
-                {/* Left - Logo + Mobile Menu */}
+              <div className="oui-flex oui-items-center oui-w-full oui-gap-6">
+                {/* Left - Logo + Mobile Menu + Navigation */}
                 <div className="oui-flex oui-items-center oui-gap-3 oui-flex-shrink-0">
                   {isHeaderMobile && (
                     <CustomLeftNav
@@ -344,19 +340,17 @@ export const useOrderlyConfig = () => {
                   {components.title}
                 </div>
 
-                {/* Center - Navigation (Desktop only) */}
+                {/* Navigation beside logo (Desktop only) */}
                 {!isHeaderMobile && (
-                  <div>
-                    <nav
-                      className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
-                      style={{ backgroundColor: "#1B1308" }}
-                    >
-                      {components.mainNav}
-                      <div className="oui-ml-2">
-                        <ModeSwitch />
-                      </div>
-                    </nav>
-                  </div>
+                  <nav
+                    className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
+                    style={{ backgroundColor: "#1B1308" }}
+                  >
+                    {components.mainNav}
+                    <div className="oui-ml-2">
+                      <ModeSwitch />
+                    </div>
+                  </nav>
                 )}
 
                 {/* Right - Widgets */}
@@ -364,8 +358,8 @@ export const useOrderlyConfig = () => {
                   itemAlign="center"
                   className={
                     isHeaderMobile
-                      ? "oui-gap-2 oui-flex-shrink-0"
-                      : "oui-gap-3 oui-flex-shrink-0"
+                      ? "oui-gap-2 oui-flex-shrink-0 oui-ml-auto"
+                      : "oui-gap-3 oui-flex-shrink-0 oui-ml-auto"
                   }
                 >
                   <EnsoCheckoutButton />
@@ -374,7 +368,7 @@ export const useOrderlyConfig = () => {
                   {components.chainMenu}
                   <AccountMenuWidget />
                 </Flex>
-              </Flex>
+              </div>
             </div>
           </div>
         </header>
