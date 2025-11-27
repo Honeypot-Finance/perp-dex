@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { useTranslation } from "@orderly.network/i18n";
 import { TradingPageProps } from "@orderly.network/trading";
 import {
@@ -250,6 +251,15 @@ const getColorConfig = (): ColorConfigInterface | undefined => {
 
 export const useOrderlyConfig = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  // Helper to check if a menu item is active
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return location.pathname.startsWith("/perp") || location.pathname === "/";
+    }
+    return location.pathname.startsWith(href);
+  };
 
   // Custom breakpoint for header mobile view at 1000px
   const [isHeaderMobile, setIsHeaderMobile] = useState(
@@ -346,7 +356,55 @@ export const useOrderlyConfig = () => {
                     className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
                     style={{ backgroundColor: "#1B1308" }}
                   >
-                    {components.mainNav}
+                    {allMenuItems.map((menu) => {
+                      const active = isActive(menu.href);
+                      const menuTarget = (menu as MainNavItem).target;
+                      return menuTarget ? (
+                        <a
+                          key={menu.name}
+                          href={menu.href}
+                          target={menuTarget}
+                          rel="noopener noreferrer"
+                          className="oui-px-4 oui-py-2 oui-text-white oui-no-underline oui-text-sm oui-font-medium oui-rounded-md oui-transition-all"
+                          style={{
+                            backgroundColor: active ? "#F7931A1A" : "transparent",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!active) {
+                              e.currentTarget.style.backgroundColor = "#F7931A1A";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!active) {
+                              e.currentTarget.style.backgroundColor = "transparent";
+                            }
+                          }}
+                        >
+                          {menu.name}
+                        </a>
+                      ) : (
+                        <Link
+                          key={menu.name}
+                          to={menu.href}
+                          className="oui-px-4 oui-py-2 oui-text-white oui-no-underline oui-text-sm oui-font-medium oui-rounded-md oui-transition-all"
+                          style={{
+                            backgroundColor: active ? "#F7931A1A" : "transparent",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!active) {
+                              e.currentTarget.style.backgroundColor = "#F7931A1A";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!active) {
+                              e.currentTarget.style.backgroundColor = "transparent";
+                            }
+                          }}
+                        >
+                          {menu.name}
+                        </Link>
+                      );
+                    })}
                     <div className="oui-ml-2">
                       <ModeSwitch />
                     </div>
@@ -442,5 +500,5 @@ export const useOrderlyConfig = () => {
         },
       },
     };
-  }, [t, isHeaderMobile]);
+  }, [t, isHeaderMobile, location.pathname]);
 };
