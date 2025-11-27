@@ -69,7 +69,7 @@ export default function AMMPerpPage() {
                 AMM Perpetual Trading
               </h1>
               <p className="oui-text-base-contrast-54 oui-mb-8">
-                Enter your invite code to access AMM perpetual trading features
+                Enter your Access code to access AMM perpetual trading features
               </p>
 
               {/* Invite Code Input */}
@@ -78,7 +78,7 @@ export default function AMMPerpPage() {
                   htmlFor="invite-code"
                   className="oui-block oui-text-left oui-text-sm oui-font-medium oui-text-base-contrast-80 oui-mb-2"
                 >
-                  Invite Code
+                  Access Code
                 </label>
                 <input
                   id="invite-code"
@@ -88,7 +88,7 @@ export default function AMMPerpPage() {
                     setInviteCode(e.target.value);
                     setError("");
                   }}
-                  placeholder="Enter your invite code"
+                  placeholder="Enter your Access code"
                   className="oui-w-full oui-px-4 oui-py-3 oui-rounded-lg oui-text-white placeholder:oui-text-base-contrast-36 oui-border"
                   style={{
                     backgroundColor: "#1A0F06",
