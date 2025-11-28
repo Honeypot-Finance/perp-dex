@@ -25,18 +25,25 @@ export const ModeSwitch = () => {
   };
 
   return (
-    <div
-      className="oui-flex oui-items-center oui-gap-1 oui-px-2 oui-py-1 oui-rounded-md"
-      style={{ backgroundColor: "#2a2a2a" }}
-    >
+    <>
       <button
         onClick={() => handleModeSwitch("orderbook")}
         className={cn(
-          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all",
-          mode === "orderbook" ? "oui-text-black" : "oui-text-white/60"
+          "oui-px-4 oui-py-2 oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
         )}
         style={{
           backgroundColor: mode === "orderbook" ? "#F7931A" : "transparent",
+          color: mode === "orderbook" ? "#000" : "#fff",
+        }}
+        onMouseEnter={(e) => {
+          if (mode !== "orderbook") {
+            e.currentTarget.style.backgroundColor = "#3d3428";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (mode !== "orderbook") {
+            e.currentTarget.style.backgroundColor = "transparent";
+          }
         }}
       >
         Orderbook
@@ -44,15 +51,25 @@ export const ModeSwitch = () => {
       <button
         onClick={() => handleModeSwitch("amm")}
         className={cn(
-          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all",
-          mode === "amm" ? "oui-text-black" : "oui-text-white/60"
+          "oui-px-4 oui-py-2 oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
         )}
         style={{
           backgroundColor: mode === "amm" ? "#F7931A" : "transparent",
+          color: mode === "amm" ? "#000" : "#fff",
+        }}
+        onMouseEnter={(e) => {
+          if (mode !== "amm") {
+            e.currentTarget.style.backgroundColor = "#3d3428";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (mode !== "amm") {
+            e.currentTarget.style.backgroundColor = "transparent";
+          }
         }}
       >
         AMM
       </button>
-    </div>
+    </>
   );
 };

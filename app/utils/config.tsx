@@ -353,8 +353,8 @@ export const useOrderlyConfig = () => {
                 {/* Navigation beside logo (Desktop only) */}
                 {!isHeaderMobile && (
                   <nav
-                    className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
-                    style={{ backgroundColor: "#1B1308" }}
+                    className="oui-flex oui-items-center oui-gap-1 oui-px-2 oui-py-1.5 oui-rounded-xl"
+                    style={{ backgroundColor: "#26211b" }}
                   >
                     {allMenuItems.map((menu) => {
                       const active = isActive(menu.href);
@@ -365,13 +365,14 @@ export const useOrderlyConfig = () => {
                           href={menu.href}
                           target={menuTarget}
                           rel="noopener noreferrer"
-                          className="oui-px-4 oui-py-2 oui-text-white oui-no-underline oui-text-sm oui-font-medium oui-rounded-md oui-transition-all"
+                          className="oui-px-4 oui-py-2 oui-no-underline oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
                           style={{
-                            backgroundColor: active ? "#F7931A1A" : "transparent",
+                            backgroundColor: active ? "#F7931A" : "transparent",
+                            color: active ? "#000" : "#fff",
                           }}
                           onMouseEnter={(e) => {
                             if (!active) {
-                              e.currentTarget.style.backgroundColor = "#F7931A1A";
+                              e.currentTarget.style.backgroundColor = "#3d3428";
                             }
                           }}
                           onMouseLeave={(e) => {
@@ -386,13 +387,14 @@ export const useOrderlyConfig = () => {
                         <Link
                           key={menu.name}
                           to={menu.href}
-                          className="oui-px-4 oui-py-2 oui-text-white oui-no-underline oui-text-sm oui-font-medium oui-rounded-md oui-transition-all"
+                          className="oui-px-4 oui-py-2 oui-no-underline oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
                           style={{
-                            backgroundColor: active ? "#F7931A1A" : "transparent",
+                            backgroundColor: active ? "#F7931A" : "transparent",
+                            color: active ? "#000" : "#fff",
                           }}
                           onMouseEnter={(e) => {
                             if (!active) {
-                              e.currentTarget.style.backgroundColor = "#F7931A1A";
+                              e.currentTarget.style.backgroundColor = "#3d3428";
                             }
                           }}
                           onMouseLeave={(e) => {
@@ -405,9 +407,7 @@ export const useOrderlyConfig = () => {
                         </Link>
                       );
                     })}
-                    <div className="oui-ml-2">
-                      <ModeSwitch />
-                    </div>
+                    <ModeSwitch />
                   </nav>
                 )}
 
@@ -482,7 +482,10 @@ export const useOrderlyConfig = () => {
           scriptSRC: withBasePath(
             "/tradingview/charting_library/charting_library.js"
           ),
-          library_path: withBasePath("/tradingview/charting_library/"),
+          library_path:
+            typeof window !== "undefined"
+              ? `${window.location.origin}${withBasePath("/tradingview/charting_library/")}`
+              : withBasePath("/tradingview/charting_library/"),
           customCssUrl: withBasePath("/tradingview/chart.css"),
           colorConfig: getColorConfig(),
         },
