@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import OrderlyProvider from "@/components/orderlyProvider";
 import { HttpsRequiredWarning } from "@/components/HttpsRequiredWarning";
+import TermsAgreementDialog from "@/components/TermsAgreementDialog";
 import { withBasePath } from "./utils/base-path";
 import { getSEOConfig, getUserLanguage } from "./utils/seo";
 
@@ -25,6 +26,7 @@ export default function App() {
         />
       </Helmet>
       <HttpsRequiredWarning />
+      <TermsAgreementDialog />
       <OrderlyProvider>
         <Outlet />
       </OrderlyProvider>
