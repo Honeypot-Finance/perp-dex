@@ -80,6 +80,7 @@ const ALL_MENU_ITEMS = [
     translationKey: "tradingLeaderboard.leaderboard",
   },
   { name: "Vaults", href: "/vaults", translationKey: "common.vaults" },
+  { name: "Dirac Vault", href: "/dirac-vault", translationKey: "extend.diracVault" },
 ];
 
 const DEFAULT_ENABLED_MENUS = [

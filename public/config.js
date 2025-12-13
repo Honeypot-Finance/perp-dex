@@ -37,4 +37,10 @@ window.__RUNTIME_CONFIG__ = {
   VITE_CUSTOM_PNL_POSTER_COUNT: "0",
   VITE_TRADING_VIEW_COLOR_CONFIG: "",
   VITE_ENSO_API_KEY: "2fdbd4dc-68e6-440a-a51a-b486e8270930",
+  // Dirac Vault Configuration
+  VITE_DIRAC_VAULT_ADDRESS: "0x55a0264a53afbf8371444142bb0ae5d1763ed397",
+  VITE_DIRAC_VAULT_CHAIN_ID: "80094",
+  VITE_DIRAC_VAULT_NAME: "Honeypot Perpetual Vault",
+  VITE_DIRAC_VAULT_DESCRIPTION:
+    "Automated perpetual trading strategy powered by Dirac. Deposit HONEY to earn yield from trading profits.",
 };

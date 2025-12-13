@@ -93,6 +93,50 @@ For custom domain setup:
    - Navigate to the "Domains" section
    - Add and configure your custom domain
 
+## Dirac Vault Integration
+
+The template includes a Dirac Vault page for ERC4626-compatible vault strategies on Berachain.
+
+### Configuration
+
+Add vault settings to `public/config.js`:
+
+```js
+VITE_DIRAC_VAULT_ADDRESS: "0x...",      // Vault contract address
+VITE_DIRAC_VAULT_CHAIN_ID: "80094",     // Berachain chain ID
+VITE_DIRAC_VAULT_NAME: "My Vault",      // Display name
+VITE_DIRAC_VAULT_DESCRIPTION: "...",    // Description text
+```
+
+Enable the vault menu in `VITE_ENABLED_MENUS`:
+```js
+VITE_ENABLED_MENUS: "Trading,Portfolio,Dirac Vault"
+```
+
+### Features
+
+- ERC4626 vault deposits and withdrawals
+- Trade cycle status tracking
+- Automatic chain switching to Berachain
+- User position tracking with PnL display
+- Token approval flow with auto-deposit
+
+### Architecture
+
+```
+app/
+├── pages/dirac-vault/
+│   ├── Index.tsx           # Main vault page with UI components
+│   ├── Layout.tsx          # Page layout wrapper
+│   └── components/
+│       └── utils.ts        # formatNumber, useWalletChain hooks
+├── hooks/
+│   └── useDiracVault.ts    # Vault contract interaction hooks
+└── utils/dirac-vault/
+    ├── config.ts           # Runtime-configurable vault settings
+    └── abi.ts              # ERC4626 + Dirac custom ABIs
+```
+
 ## Additional Resources
 
 - [Orderly JS SDK Documentation](https://github.com/OrderlyNetwork/js-sdk)

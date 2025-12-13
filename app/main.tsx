@@ -34,6 +34,8 @@ const VaultsLayout = lazy(() => import("./pages/vaults/Layout"));
 const VaultsIndex = lazy(() => import("./pages/vaults/Index"));
 const AMMPerpLayout = lazy(() => import("./pages/amm-perp/Layout"));
 const AMMPerpIndex = lazy(() => import("./pages/amm-perp"));
+const DiracVaultLayout = lazy(() => import("./pages/dirac-vault/Layout"));
+const DiracVaultIndex = lazy(() => import("./pages/dirac-vault/Index"));
 
 async function loadRuntimeConfig() {
   return new Promise<void>((resolve) => {
@@ -139,6 +141,11 @@ const router = createBrowserRouter(
           path: "amm-perp",
           element: <AMMPerpLayout />,
           children: [{ index: true, element: <AMMPerpIndex /> }],
+        },
+        {
+          path: "dirac-vault",
+          element: <DiracVaultLayout />,
+          children: [{ index: true, element: <DiracVaultIndex /> }],
         },
       ],
     },
