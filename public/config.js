@@ -42,5 +42,5 @@ window.__RUNTIME_CONFIG__ = {
   VITE_DIRAC_VAULT_CHAIN_ID: "80094",
   VITE_DIRAC_VAULT_NAME: "Honeypot Perpetual Vault",
   VITE_DIRAC_VAULT_DESCRIPTION:
-    "Automated perpetual trading strategy powered by Dirac. Deposit HONEY to earn yield from trading profits.",
+    "Automated perpetual trading strategy powered by Dirac. Deposit USDC to earn yield from trading profits.",
 };

@@ -42,7 +42,7 @@ const getVaultName = (): string => {
 const getVaultDescription = (): string => {
   return (
     getRuntimeConfig("VITE_DIRAC_VAULT_DESCRIPTION") ||
-    "Automated perpetual trading strategy powered by Dirac. Deposit HONEY to earn yield from trading profits."
+    "Automated perpetual trading strategy powered by Dirac. Deposit USDC to earn yield from trading profits."
   );
 };
 
