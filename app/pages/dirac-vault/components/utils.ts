@@ -20,27 +20,51 @@ export function useWalletChain() {
   const [walletChainId, setWalletChainId] = useState<number | null>(null);
 
   useEffect(() => {
-    const ethereum = (window as any).ethereum;
+    const getEthereum = () => {
+      // Handle various wallet providers
+      const win = window as any;
+      return win.ethereum || win.web3?.currentProvider;
+    };
+
+    const parseChainId = (chainId: string | number): number => {
+      if (typeof chainId === "number") return chainId;
+      // Handle both "0x" prefixed and plain hex strings
+      return parseInt(chainId, chainId.startsWith("0x") ? 16 : 10);
+    };
+
+    const ethereum = getEthereum();
     if (!ethereum) return;
 
     const getChainId = async () => {
       try {
-        const chainIdHex = await ethereum.request({ method: "eth_chainId" });
-        setWalletChainId(parseInt(chainIdHex, 16));
+        const chainId = await ethereum.request({ method: "eth_chainId" });
+        setWalletChainId(parseChainId(chainId));
       } catch {
-        // Silently fail - user may not have wallet connected
+        // Try alternative method
+        try {
+          if (ethereum.chainId) {
+            setWalletChainId(parseChainId(ethereum.chainId));
+          }
+        } catch {
+          // Silently fail
+        }
       }
     };
 
     getChainId();
 
-    const handleChainChanged = (chainIdHex: string) => {
-      setWalletChainId(parseInt(chainIdHex, 16));
+    const handleChainChanged = (chainId: string | number) => {
+      setWalletChainId(parseChainId(chainId));
     };
 
     ethereum.on("chainChanged", handleChainChanged);
+
+    // Also poll periodically in case events don't fire
+    const interval = setInterval(getChainId, 2000);
+
     return () => {
       ethereum.removeListener("chainChanged", handleChainChanged);
+      clearInterval(interval);
     };
   }, []);
 
