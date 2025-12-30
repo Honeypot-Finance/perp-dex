@@ -30,6 +30,7 @@ import { ModeSwitch } from "../components/ModeSwitch";
 import { AccountMenuWidget } from "@orderly.network/ui-scaffold";
 import CustomLeftNav from "../components/CustomLeftNav";
 import { EnsoCheckoutButton } from "../components/EnsoCheckoutButton";
+import { COLORS, LAYOUT } from "@/constants/theme";
 
 interface MainNavItem {
   name: string;
@@ -261,14 +262,14 @@ export const useOrderlyConfig = () => {
     return location.pathname.startsWith(href);
   };
 
-  // Custom breakpoint for header mobile view at 1000px
+  // Custom breakpoint for header mobile view
   const [isHeaderMobile, setIsHeaderMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 1000 : false
+    typeof window !== "undefined" ? window.innerWidth < LAYOUT.headerMobileBreakpoint : false
   );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsHeaderMobile(window.innerWidth < 1000);
+      setIsHeaderMobile(window.innerWidth < LAYOUT.headerMobileBreakpoint);
     };
 
     window.addEventListener("resize", handleResize);
@@ -330,9 +331,12 @@ export const useOrderlyConfig = () => {
       return (
         <header
           className="oui-w-full"
-          style={{ backgroundColor: "#140E06" }}
+          style={{ backgroundColor: COLORS.background.header }}
         >
-          <div className="oui-w-full oui-mx-auto oui-max-w-[1920px]">
+          <div
+            className="oui-w-full oui-mx-auto"
+            style={{ maxWidth: LAYOUT.headerMaxWidth }}
+          >
             <div
               className={`oui-relative oui-w-full ${
                 isHeaderMobile ? "oui-px-4 oui-py-2" : "oui-px-6 oui-py-4"
@@ -352,13 +356,25 @@ export const useOrderlyConfig = () => {
 
                 {/* Navigation beside logo (Desktop only) */}
                 {!isHeaderMobile && (
-                  <nav
-                    className="oui-flex oui-items-center oui-gap-1 oui-px-2 oui-py-1.5 oui-rounded-xl"
-                    style={{ backgroundColor: "#26211b" }}
-                  >
+                  <nav className="oui-flex oui-items-center oui-gap-1">
                     {allMenuItems.map((menu) => {
                       const active = isActive(menu.href);
                       const menuTarget = (menu as MainNavItem).target;
+                      const navItemStyle = {
+                        backgroundColor: active ? COLORS.brand.primary : "transparent",
+                        color: active ? COLORS.text.dark : COLORS.text.light,
+                      };
+                      const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = COLORS.interactive.hover;
+                        }
+                      };
+                      const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                        }
+                      };
+
                       return menuTarget ? (
                         <a
                           key={menu.name}
@@ -366,20 +382,9 @@ export const useOrderlyConfig = () => {
                           target={menuTarget}
                           rel="noopener noreferrer"
                           className="oui-px-4 oui-py-2 oui-no-underline oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
-                          style={{
-                            backgroundColor: active ? "#F7931A" : "transparent",
-                            color: active ? "#000" : "#fff",
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!active) {
-                              e.currentTarget.style.backgroundColor = "#3d3428";
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (!active) {
-                              e.currentTarget.style.backgroundColor = "transparent";
-                            }
-                          }}
+                          style={navItemStyle}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
                         >
                           {menu.name}
                         </a>
@@ -388,20 +393,9 @@ export const useOrderlyConfig = () => {
                           key={menu.name}
                           to={menu.href}
                           className="oui-px-4 oui-py-2 oui-no-underline oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
-                          style={{
-                            backgroundColor: active ? "#F7931A" : "transparent",
-                            color: active ? "#000" : "#fff",
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!active) {
-                              e.currentTarget.style.backgroundColor = "#3d3428";
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (!active) {
-                              e.currentTarget.style.backgroundColor = "transparent";
-                            }
-                          }}
+                          style={navItemStyle}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
                         >
                           {menu.name}
                         </Link>

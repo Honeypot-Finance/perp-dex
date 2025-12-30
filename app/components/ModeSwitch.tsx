@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@orderly.network/ui";
+import { COLORS } from "@/constants/theme";
 
 export const ModeSwitch = () => {
   const location = useLocation();
@@ -24,6 +25,23 @@ export const ModeSwitch = () => {
     }
   };
 
+  const getButtonStyle = (isActive: boolean) => ({
+    backgroundColor: isActive ? COLORS.brand.primary : "transparent",
+    color: isActive ? COLORS.text.dark : COLORS.text.light,
+  });
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>, isActive: boolean) => {
+    if (!isActive) {
+      e.currentTarget.style.backgroundColor = COLORS.interactive.hover;
+    }
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>, isActive: boolean) => {
+    if (!isActive) {
+      e.currentTarget.style.backgroundColor = "transparent";
+    }
+  };
+
   return (
     <>
       <button
@@ -31,20 +49,9 @@ export const ModeSwitch = () => {
         className={cn(
           "oui-px-4 oui-py-2 oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
         )}
-        style={{
-          backgroundColor: mode === "orderbook" ? "#F7931A" : "transparent",
-          color: mode === "orderbook" ? "#000" : "#fff",
-        }}
-        onMouseEnter={(e) => {
-          if (mode !== "orderbook") {
-            e.currentTarget.style.backgroundColor = "#3d3428";
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (mode !== "orderbook") {
-            e.currentTarget.style.backgroundColor = "transparent";
-          }
-        }}
+        style={getButtonStyle(mode === "orderbook")}
+        onMouseEnter={(e) => handleMouseEnter(e, mode === "orderbook")}
+        onMouseLeave={(e) => handleMouseLeave(e, mode === "orderbook")}
       >
         Orderbook
       </button>
@@ -53,20 +60,9 @@ export const ModeSwitch = () => {
         className={cn(
           "oui-px-4 oui-py-2 oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
         )}
-        style={{
-          backgroundColor: mode === "amm" ? "#F7931A" : "transparent",
-          color: mode === "amm" ? "#000" : "#fff",
-        }}
-        onMouseEnter={(e) => {
-          if (mode !== "amm") {
-            e.currentTarget.style.backgroundColor = "#3d3428";
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (mode !== "amm") {
-            e.currentTarget.style.backgroundColor = "transparent";
-          }
-        }}
+        style={getButtonStyle(mode === "amm")}
+        onMouseEnter={(e) => handleMouseEnter(e, mode === "amm")}
+        onMouseLeave={(e) => handleMouseLeave(e, mode === "amm")}
       >
         AMM
       </button>
