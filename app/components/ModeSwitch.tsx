@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@orderly.network/ui";
+import { COLORS } from "@/constants/theme";
 
 export const ModeSwitch = () => {
   const location = useLocation();
@@ -24,35 +25,47 @@ export const ModeSwitch = () => {
     }
   };
 
+  const getButtonStyle = (isActive: boolean) => ({
+    backgroundColor: isActive ? COLORS.brand.primary : "transparent",
+    color: isActive ? COLORS.text.dark : COLORS.text.light,
+  });
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>, isActive: boolean) => {
+    if (!isActive) {
+      e.currentTarget.style.backgroundColor = COLORS.interactive.hover;
+    }
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>, isActive: boolean) => {
+    if (!isActive) {
+      e.currentTarget.style.backgroundColor = "transparent";
+    }
+  };
+
   return (
-    <div
-      className="oui-flex oui-items-center oui-gap-1 oui-px-2 oui-py-1 oui-rounded-md"
-      style={{ backgroundColor: "#2a2a2a" }}
-    >
+    <>
       <button
         onClick={() => handleModeSwitch("orderbook")}
         className={cn(
-          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all",
-          mode === "orderbook" ? "oui-text-black" : "oui-text-white/60"
+          "oui-px-4 oui-py-2 oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
         )}
-        style={{
-          backgroundColor: mode === "orderbook" ? "#F7931A" : "transparent",
-        }}
+        style={getButtonStyle(mode === "orderbook")}
+        onMouseEnter={(e) => handleMouseEnter(e, mode === "orderbook")}
+        onMouseLeave={(e) => handleMouseLeave(e, mode === "orderbook")}
       >
         Orderbook
       </button>
       <button
         onClick={() => handleModeSwitch("amm")}
         className={cn(
-          "oui-px-3 oui-py-1.5 oui-text-xs oui-font-medium oui-rounded oui-transition-all",
-          mode === "amm" ? "oui-text-black" : "oui-text-white/60"
+          "oui-px-4 oui-py-2 oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
         )}
-        style={{
-          backgroundColor: mode === "amm" ? "#F7931A" : "transparent",
-        }}
+        style={getButtonStyle(mode === "amm")}
+        onMouseEnter={(e) => handleMouseEnter(e, mode === "amm")}
+        onMouseLeave={(e) => handleMouseLeave(e, mode === "amm")}
       >
         AMM
       </button>
-    </div>
+    </>
   );
 };

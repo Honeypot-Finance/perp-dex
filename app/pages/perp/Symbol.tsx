@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { API } from "@orderly.network/types";
-import { TradingPage } from "@orderly.network/trading";
 import { updateSymbol } from "@/utils/storage";
 import { formatSymbol, generatePageTitle } from "@/utils/utils";
 import { useOrderlyConfig } from "@/utils/config";
 import { getPageMeta } from "@/utils/seo";
 import { renderSEOTags } from "@/utils/seo-tags";
+import { CustomTradingPage } from "@/components/CustomTradingPage";
 
 export default function PerpSymbol() {
   const params = useParams();
@@ -23,10 +23,10 @@ export default function PerpSymbol() {
     (data: API.Symbol) => {
       const symbol = data.symbol;
       setSymbol(symbol);
-      
+
       const searchParamsString = searchParams.toString();
       const queryString = searchParamsString ? `?${searchParamsString}` : '';
-      
+
       navigate(`/perp/${symbol}${queryString}`);
     },
     [navigate, searchParams]
@@ -38,7 +38,7 @@ export default function PerpSymbol() {
   return (
     <>
       {renderSEOTags(pageMeta, pageTitle)}
-      <TradingPage
+      <CustomTradingPage
         symbol={symbol}
         onSymbolChange={onSymbolChange}
         tradingViewConfig={config.tradingPage.tradingViewConfig}

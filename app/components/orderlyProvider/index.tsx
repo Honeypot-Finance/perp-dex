@@ -57,7 +57,7 @@ import {
   getRuntimeConfigArray,
   getRuntimeConfig,
 } from "@/utils/runtime-config";
-import { DemoGraduationChecker } from "@/components/DemoGraduationChecker";
+// import { DemoGraduationChecker } from "@/components/DemoGraduationChecker";
 import ServiceDisclaimerDialog from "./ServiceRestrictionsDialog";
 import {
   WalletProviderSelector,
@@ -401,7 +401,7 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
       {...(chainFilter && ({ chainFilter } as any))}
       defaultChain={defaultChain}
     >
-      <DemoGraduationChecker />
+      {/* <DemoGraduationChecker /> */}
       <ServiceDisclaimerDialog isRestricted={false} />
       {props.children}
     </OrderlyAppProvider>

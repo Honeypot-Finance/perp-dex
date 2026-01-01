@@ -11,3 +11,12 @@
 .oui-portfolio-page .oui-box.oui-flex.oui-flex-nowrap > div:nth-child(2).oui-box.oui-flex.oui-justify-start.oui-flex-nowrap.oui-relative {
   display: none;
 }
+
+/* Make orderbook tabs full width */
+.orderbook-full-width-tabs [role="tablist"] {
+  width: 100%;
+}
+
+.orderbook-full-width-tabs [role="tablist"] > button {
+  flex: 1;
+}

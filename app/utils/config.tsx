@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { useTranslation } from "@orderly.network/i18n";
 import { TradingPageProps } from "@orderly.network/trading";
 import {
@@ -29,6 +30,7 @@ import { ModeSwitch } from "../components/ModeSwitch";
 import { AccountMenuWidget } from "@orderly.network/ui-scaffold";
 import CustomLeftNav from "../components/CustomLeftNav";
 import { EnsoCheckoutButton } from "../components/EnsoCheckoutButton";
+import { COLORS, LAYOUT } from "@/constants/theme";
 
 interface MainNavItem {
   name: string;
@@ -251,15 +253,24 @@ const getColorConfig = (): ColorConfigInterface | undefined => {
 
 export const useOrderlyConfig = () => {
   const { t } = useTranslation();
+  const location = useLocation();
 
-  // Custom breakpoint for header mobile view at 1000px
+  // Helper to check if a menu item is active
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return location.pathname.startsWith("/perp") || location.pathname === "/";
+    }
+    return location.pathname.startsWith(href);
+  };
+
+  // Custom breakpoint for header mobile view
   const [isHeaderMobile, setIsHeaderMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 1000 : false
+    typeof window !== "undefined" ? window.innerWidth < LAYOUT.headerMobileBreakpoint : false
   );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsHeaderMobile(window.innerWidth < 1000);
+      setIsHeaderMobile(window.innerWidth < LAYOUT.headerMobileBreakpoint);
     };
 
     window.addEventListener("resize", handleResize);
@@ -321,20 +332,19 @@ export const useOrderlyConfig = () => {
       return (
         <header
           className="oui-w-full"
-          style={{ backgroundColor: "#140E06" }}
+          style={{ backgroundColor: COLORS.background.header }}
         >
-          <div className="oui-w-full oui-mx-auto oui-max-w-[1920px]">
+          <div
+            className="oui-w-full oui-mx-auto"
+            style={{ maxWidth: LAYOUT.headerMaxWidth }}
+          >
             <div
               className={`oui-relative oui-w-full ${
                 isHeaderMobile ? "oui-px-4 oui-py-2" : "oui-px-6 oui-py-4"
               }`}
             >
-              <Flex
-                justify="between"
-                itemAlign="center"
-                className="oui-w-full"
-              >
-                {/* Left - Logo + Mobile Menu */}
+              <div className="oui-flex oui-items-center oui-w-full oui-gap-6">
+                {/* Left - Logo + Mobile Menu + Navigation */}
                 <div className="oui-flex oui-items-center oui-gap-3 oui-flex-shrink-0">
                   {isHeaderMobile && (
                     <CustomLeftNav
@@ -345,19 +355,55 @@ export const useOrderlyConfig = () => {
                   {components.title}
                 </div>
 
-                {/* Center - Navigation (Desktop only) */}
+                {/* Navigation beside logo (Desktop only) */}
                 {!isHeaderMobile && (
-                  <div>
-                    <nav
-                      className="oui-flex oui-gap-1 oui-px-4 oui-py-2 oui-rounded-lg"
-                      style={{ backgroundColor: "#1B1308" }}
-                    >
-                      {components.mainNav}
-                      <div className="oui-ml-2">
-                        <ModeSwitch />
-                      </div>
-                    </nav>
-                  </div>
+                  <nav className="oui-flex oui-items-center oui-gap-1">
+                    {allMenuItems.map((menu) => {
+                      const active = isActive(menu.href);
+                      const menuTarget = (menu as MainNavItem).target;
+                      const navItemStyle = {
+                        backgroundColor: active ? COLORS.brand.primary : "transparent",
+                        color: active ? COLORS.text.dark : COLORS.text.light,
+                      };
+                      const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = COLORS.interactive.hover;
+                        }
+                      };
+                      const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+                        if (!active) {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                        }
+                      };
+
+                      return menuTarget ? (
+                        <a
+                          key={menu.name}
+                          href={menu.href}
+                          target={menuTarget}
+                          rel="noopener noreferrer"
+                          className="oui-px-4 oui-py-2 oui-no-underline oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
+                          style={navItemStyle}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {menu.name}
+                        </a>
+                      ) : (
+                        <Link
+                          key={menu.name}
+                          to={menu.href}
+                          className="oui-px-4 oui-py-2 oui-no-underline oui-text-sm oui-font-medium oui-rounded-lg oui-transition-all"
+                          style={navItemStyle}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {menu.name}
+                        </Link>
+                      );
+                    })}
+                    <ModeSwitch />
+                  </nav>
                 )}
 
                 {/* Right - Widgets */}
@@ -365,8 +411,8 @@ export const useOrderlyConfig = () => {
                   itemAlign="center"
                   className={
                     isHeaderMobile
-                      ? "oui-gap-2 oui-flex-shrink-0"
-                      : "oui-gap-3 oui-flex-shrink-0"
+                      ? "oui-gap-2 oui-flex-shrink-0 oui-ml-auto"
+                      : "oui-gap-3 oui-flex-shrink-0 oui-ml-auto"
                   }
                 >
                   <EnsoCheckoutButton />
@@ -375,7 +421,7 @@ export const useOrderlyConfig = () => {
                   {components.chainMenu}
                   <AccountMenuWidget />
                 </Flex>
-              </Flex>
+              </div>
             </div>
           </div>
         </header>
@@ -431,7 +477,10 @@ export const useOrderlyConfig = () => {
           scriptSRC: withBasePath(
             "/tradingview/charting_library/charting_library.js"
           ),
-          library_path: withBasePath("/tradingview/charting_library/"),
+          library_path:
+            typeof window !== "undefined"
+              ? `${window.location.origin}${withBasePath("/tradingview/charting_library/")}`
+              : withBasePath("/tradingview/charting_library/"),
           customCssUrl: withBasePath("/tradingview/chart.css"),
           colorConfig: getColorConfig(),
         },
@@ -449,5 +498,5 @@ export const useOrderlyConfig = () => {
         },
       },
     };
-  }, [t, isHeaderMobile]);
+  }, [t, isHeaderMobile, location.pathname]);
 };
