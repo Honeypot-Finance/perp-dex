@@ -5,6 +5,7 @@ export const COLORS = {
   // Background colors
   background: {
     primary: "#0b0a09",
+    secondary: "#111110",
     header: "#140E06",
   },
   // Border colors

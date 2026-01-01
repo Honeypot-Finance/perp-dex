@@ -13,7 +13,6 @@ import { SymbolInfoBarFullWidget, SideMarketsWidget } from "@orderly.network/mar
 import { API } from "@orderly.network/types";
 import { modal } from "@orderly.network/ui";
 import { DepositAndWithdrawWithDialogId } from "@orderly.network/ui-transfer";
-import { AnnouncementWidget } from "@orderly.network/ui-scaffold";
 import { COLORS, LAYOUT, getMainContentHeight } from "@/constants/theme";
 
 interface CustomTradingPageProps {
@@ -73,7 +72,7 @@ const TradingViewWrapper: FC<{ symbol: string; tradingViewConfig: TradingPagePro
   const tradingviewState = useTradingviewScript({
     symbol,
     scriptSRC: tradingViewConfig?.scriptSRC,
-    libraryPath: tradingViewConfig?.library_path, // Note: prop is libraryPath, config is library_path
+    libraryPath: tradingViewConfig?.library_path,
     customCssUrl: tradingViewConfig?.customCssUrl,
     colorConfig: tradingViewConfig?.colorConfig,
   });
@@ -106,9 +105,6 @@ export const CustomTradingPage: FC<CustomTradingPageProps> = ({
           height: getMainContentHeight(),
         }}
       >
-        {/* Announcement Banner - Full Width */}
-        <AnnouncementWidget />
-
         {/* Main content area */}
         <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
           {/* Left Sidebar - Order Form */}

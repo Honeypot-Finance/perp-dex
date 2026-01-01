@@ -61,8 +61,27 @@ export default defineConfig(() => {
     build: {
       outDir: "build/client",
     },
+    resolve: {
+      dedupe: [
+        "react",
+        "react-dom",
+        "@orderly.network/hooks",
+        "@orderly.network/core",
+        "@orderly.network/react-app",
+        "@orderly.network/ui",
+        "@orderly.network/ui-tradingview",
+      ],
+    },
     optimizeDeps: {
-      include: ["react", "react-dom", "react-router-dom"],
+      include: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "@orderly.network/hooks",
+        "@orderly.network/core",
+        "@orderly.network/react-app",
+        "@orderly.network/ui-tradingview",
+      ],
     },
   };
 });
