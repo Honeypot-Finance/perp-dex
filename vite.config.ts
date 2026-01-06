@@ -60,6 +60,25 @@ export default defineConfig(() => {
     ],
     build: {
       outDir: "build/client",
+      // Disable gzip size calculation to reduce memory usage during build
+      reportCompressedSize: false,
+      // Increase chunk size warning limit (optional, reduces warnings)
+      chunkSizeWarningLimit: 2000,
+      rollupOptions: {
+        output: {
+          // Manual chunking to reduce memory pressure and improve caching
+          manualChunks: {
+            // Vendor chunks - split large dependencies
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-orderly': [
+              '@orderly.network/hooks',
+              '@orderly.network/core',
+              '@orderly.network/ui',
+            ],
+            'vendor-wallet': ['viem', 'wagmi', 'ethers'],
+          },
+        },
+      },
     },
     resolve: {
       dedupe: [
