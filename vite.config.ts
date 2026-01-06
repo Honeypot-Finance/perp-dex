@@ -68,14 +68,8 @@ export default defineConfig(() => {
         output: {
           // Manual chunking to reduce memory pressure and improve caching
           manualChunks: {
-            // Vendor chunks - split large dependencies
+            // Only chunk React - wallet libs have circular deps
             'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-            'vendor-orderly': [
-              '@orderly.network/hooks',
-              '@orderly.network/core',
-              '@orderly.network/ui',
-            ],
-            'vendor-wallet': ['viem', 'wagmi', 'ethers'],
           },
         },
       },
