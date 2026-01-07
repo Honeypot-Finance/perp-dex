@@ -161,7 +161,7 @@ export const CustomTradingPage: FC<CustomTradingPageProps> = ({
                 minHeight: LAYOUT.positionsTableHeight,
               }}
             >
-              <DataListWidget onSymbolChange={onSymbolChange} />
+              <DataListWidget onSymbolChange={onSymbolChange} sharePnLConfig={sharePnLConfig} />
             </div>
           </div>
 
