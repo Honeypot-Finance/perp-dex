@@ -3,8 +3,10 @@ import { OrdersModule } from "@orderly.network/portfolio";
 import { generatePageTitle } from "@/utils/utils";
 import { getPageMeta } from "@/utils/seo";
 import { renderSEOTags } from "@/utils/seo-tags";
+import { useOrderlyConfig } from "@/utils/config";
 
 export default function PortfolioOrders() {
+  const config = useOrderlyConfig();
   const pageMeta = getPageMeta();
   const pageTitle = generatePageTitle("Orders");
 
@@ -24,7 +26,7 @@ export default function PortfolioOrders() {
           height: "calc(100vh - 48px - 29px - 48px)",
         }}
       >
-        <OrdersModule.OrdersPage />
+        <OrdersModule.OrdersPage sharePnLConfig={config.tradingPage.sharePnLConfig} />
       </Box>
     </>
   );
