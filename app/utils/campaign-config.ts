@@ -15,7 +15,7 @@ export interface Campaign {
 export const campaigns: Campaign[] = [
   {
     id: "1",
-    title: "Earn POT Points",
+    title: "Season 2 Pot Point",
     description:
       "Participate in activities to earn points for the upcoming Season 2 airdrop allocation",
     startDate: "2026-01-01",
