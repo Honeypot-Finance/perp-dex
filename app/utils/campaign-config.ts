@@ -3,7 +3,7 @@ export interface Campaign {
   title: string;
   description: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   status: "active" | "upcoming" | "ended";
   prize: string;
   participants?: number;
@@ -16,14 +16,14 @@ export const campaigns: Campaign[] = [
   {
     id: "1",
     title: "Earn POT Points",
-    description: "Participate in activities to earn points for the upcoming TGE airdrop allocation",
-    startDate: "2024-10-01",
-    endDate: "2024-12-25",
+    description:
+      "Participate in activities to earn points for the upcoming TGE airdrop allocation",
+    startDate: "2026-01-01",
     status: "active",
     prize: "",
     participants: 0,
     tags: [],
-    link: "https://points.honeypotfinance.xyz/loyalty",
+    link: "https://points.honeypotfinance.xyz",
   },
 ];
 

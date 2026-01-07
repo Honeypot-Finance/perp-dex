@@ -13,7 +13,7 @@ interface CampaignCardProps {
   title: string;
   description: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   status: "active" | "upcoming" | "ended";
   prize: string;
   participants?: number;
@@ -123,7 +123,7 @@ const CampaignCard = ({
               Duration
             </span>
             <span className="oui-text-xs oui-font-semibold oui-text-base-contrast-80">
-              {formatDate(startDate)} - {formatDate(endDate)}
+              {endDate ? `${formatDate(startDate)} - ${formatDate(endDate)}` : `From ${formatDate(startDate)}`}
             </span>
           </div>
         </div>
