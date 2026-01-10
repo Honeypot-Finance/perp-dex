@@ -31,6 +31,12 @@ function DiracVaultCard() {
           {/* Chain icons */}
           <div className="oui-flex oui-items-center oui-gap-0.5 oui-ml-1">
             <img
+              src="/images/chains/berachain.png"
+              alt="Berachain"
+              title="Berachain"
+              className="oui-w-4 oui-h-4 oui-rounded-full"
+            />
+            <img
               src="/images/chains/arbitrum.png"
               alt="Arbitrum"
               title="Arbitrum"
@@ -48,17 +54,11 @@ function DiracVaultCard() {
               title="Base"
               className="oui-w-4 oui-h-4 oui-rounded-full"
             />
-            <img
-              src="/images/chains/polygon.png"
-              alt="Polygon"
-              title="Polygon"
-              className="oui-w-4 oui-h-4 oui-rounded-full"
-            />
             {/* More chains indicator */}
             <div
               className="oui-w-4 oui-h-4 oui-rounded-full oui-flex oui-items-center oui-justify-center oui-text-[6px] oui-font-medium oui-text-white"
               style={{ background: "rgba(255,255,255,0.2)" }}
-              title="Ethereum, Avalanche, BSC, Berachain, Gnosis, Hyper, Ink, Linea, Plume, Soneium, Sonic, Unichain, World, zkSync, and more"
+              title="Ethereum, Polygon, Avalanche, BSC, Gnosis, Hyper, Ink, Linea, Plume, Soneium, Sonic, Unichain, World, zkSync, and more"
             >
               +17
             </div>
