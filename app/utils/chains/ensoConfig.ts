@@ -89,6 +89,54 @@ export const ensoChainConfigs: Record<number, EnsoChainConfig> = {
     tokenOut: "0x549943e04f40284185054145c6E4e9568C1D3241", // USDC
     tokenSymbol: "USDC",
   },
+  // Gnosis
+  100: {
+    chainId: 100,
+    tokenOut: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83", // USDC (bridged)
+    tokenSymbol: "USDC",
+  },
+  // Hyper (Hyperliquid EVM)
+  999: {
+    chainId: 999,
+    tokenOut: "0xb88339CB7199b77E23DB6E890353E22632Ba630f", // USDC (native)
+    tokenSymbol: "USDC",
+  },
+  // Ink
+  57073: {
+    chainId: 57073,
+    tokenOut: "0x2D270e6886d130D724215A266106e6832161EAEd", // USDC (native)
+    tokenSymbol: "USDC",
+  },
+  // Plume
+  98866: {
+    chainId: 98866,
+    tokenOut: "0x222365EF19F7947e5484218551B56bb3965Aa7aF", // USDC (native)
+    tokenSymbol: "USDC",
+  },
+  // Soneium
+  1868: {
+    chainId: 1868,
+    tokenOut: "0xba9986d2381edf1da03b0b9c1f8b00dc4aacc369", // USDC.e (bridged)
+    tokenSymbol: "USDC.e",
+  },
+  // Unichain
+  130: {
+    chainId: 130,
+    tokenOut: "0x078D782b760474a361dDA0AF3839290b0EF57AD6", // USDC (native)
+    tokenSymbol: "USDC",
+  },
+  // World Chain
+  480: {
+    chainId: 480,
+    tokenOut: "0x79a02482a880bce3f13e09da970dc34db4cd24d1", // USDC (native)
+    tokenSymbol: "USDC",
+  },
+  // zkSync Era
+  324: {
+    chainId: 324,
+    tokenOut: "0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4", // USDC (native)
+    tokenSymbol: "USDC",
+  },
   // Merlin
   4200: {
     chainId: 4200,

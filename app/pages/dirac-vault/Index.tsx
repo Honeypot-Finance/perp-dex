@@ -136,25 +136,16 @@ function VaultHeader() {
         <div className="oui-flex oui-items-center oui-justify-between oui-flex-wrap oui-gap-3">
           <div className="oui-flex oui-items-center oui-gap-3">
             <div
-              className="oui-w-10 oui-h-10 oui-rounded-xl oui-flex oui-items-center oui-justify-center"
+              className="oui-w-10 oui-h-10 oui-rounded-xl oui-flex oui-items-center oui-justify-center oui-bg-white"
               style={{
-                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
                 boxShadow: "0 4px 12px rgba(99, 102, 241, 0.4)",
               }}
             >
-              <svg
-                className="oui-w-5 oui-h-5 oui-text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
+              <img
+                src="/images/walletproviders/dirac-icon.avif"
+                alt="Dirac"
+                className="oui-w-7 oui-h-7"
+              />
             </div>
             <div>
               <div className="oui-flex oui-items-center oui-gap-2">

@@ -17,35 +17,50 @@ function DiracVaultCard() {
       <div className="oui-flex oui-items-center oui-justify-between oui-mb-3">
         <div className="oui-flex oui-items-center oui-gap-2">
           <div
-            className="oui-w-8 oui-h-8 oui-rounded-full oui-flex oui-items-center oui-justify-center"
-            style={{
-              background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-            }}
+            className="oui-w-8 oui-h-8 oui-rounded-full oui-flex oui-items-center oui-justify-center oui-bg-white"
           >
-            <svg
-              className="oui-w-4 oui-h-4 oui-text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
+            <img
+              src="/images/walletproviders/dirac-icon.avif"
+              alt="Dirac"
+              className="oui-w-6 oui-h-6"
+            />
           </div>
           <span className="oui-text-sm oui-font-semibold oui-text-white">
             Dirac Vault
           </span>
-          {/* Chain icon */}
-          <div className="oui-flex oui-items-center oui-gap-1 oui-ml-1">
+          {/* Chain icons */}
+          <div className="oui-flex oui-items-center oui-gap-0.5 oui-ml-1">
+            <img
+              src="/images/chains/arbitrum.png"
+              alt="Arbitrum"
+              title="Arbitrum"
+              className="oui-w-4 oui-h-4 oui-rounded-full"
+            />
+            <img
+              src="/images/chains/optimism.png"
+              alt="Optimism"
+              title="Optimism"
+              className="oui-w-4 oui-h-4 oui-rounded-full"
+            />
+            <img
+              src="/images/chains/base.png"
+              alt="Base"
+              title="Base"
+              className="oui-w-4 oui-h-4 oui-rounded-full"
+            />
+            <img
+              src="/images/chains/polygon.png"
+              alt="Polygon"
+              title="Polygon"
+              className="oui-w-4 oui-h-4 oui-rounded-full"
+            />
+            {/* More chains indicator */}
             <div
-              className="oui-w-4 oui-h-4 oui-rounded-full oui-flex oui-items-center oui-justify-center oui-text-[8px] oui-font-bold"
-              style={{ background: "#FFB800" }}
+              className="oui-w-4 oui-h-4 oui-rounded-full oui-flex oui-items-center oui-justify-center oui-text-[6px] oui-font-medium oui-text-white"
+              style={{ background: "rgba(255,255,255,0.2)" }}
+              title="Ethereum, Avalanche, BSC, Berachain, Gnosis, Hyper, Ink, Linea, Plume, Soneium, Sonic, Unichain, World, zkSync, and more"
             >
-              B
+              +17
             </div>
           </div>
         </div>
